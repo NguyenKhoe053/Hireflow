@@ -8,7 +8,7 @@ const DB = {
   clearSession: () => localStorage.removeItem('hf_session'),
 };
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://hireflow-9fn2.onrender.com/api';
 
 const API = {
   get: async (path) => {
