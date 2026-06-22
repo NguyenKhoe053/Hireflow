@@ -156,9 +156,15 @@ function doRegister(e) {
 }
 
 function quickLogin(email) {
-  const profiles = DB.get('profiles');
-  const user = profiles.find(p => p.email === email);
-  if (user) { DB.setSession(user); startApp(user); }
+  const isHR = email.includes('hr');
+  const user = {
+    id: isHR ? 'hr-123' : 'intern-456',
+    email: email,
+    full_name: isHR ? 'Trần Thị Hương' : 'Nguyễn Văn An',
+    role: isHR ? 'recruiter' : 'candidate'
+  };
+  DB.setSession(user);
+  startApp(user);
 }
 
 function logout() {
