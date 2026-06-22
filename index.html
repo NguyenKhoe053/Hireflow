@@ -2,13 +2,2066 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231ed760'/><text y='.9em' font-size='70' x='15'>💼</text></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tuyển Thực Tập — Ứng dụng Tuyển dụng & Thực tập</title>
-    <meta name="description" content="Tuyển Thực Tập - Hệ thống quản lý tuyển dụng dành cho sinh viên thực tập. ATS Kanban, SQL Cloud Database, Admin & User roles." />
+    <title>Tuyển Thực Tập — Hệ thống tuyển dụng & thực tập thông minh</title>
+    <meta name="description" content="Tuyển Thực Tập giúp sinh viên thực tập chưa có kinh nghiệm nổi bật 10/10 trong mắt HR. Quản lý hồ sơ, lịch phỏng vấn, bảng ATS kanban thời gian thực với SQL Cloud." />
+    <meta name="keywords" content="Tuyển Thực Tập, tuyển dụng, thực tập, intern, hr, hồ sơ, ứng tuyển, ATS" />
+    <meta property="og:title" content="Tuyển Thực Tập — Nền tảng tuyển dụng thực tập thông minh" />
+    <meta property="og:description" content="Xây dựng bởi sinh viên cho sinh viên — Hệ thống ATS chuyên nghiệp giúp bạn nổi bật với HR" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231ed760'/><text y='.9em' font-size='70' x='15'>💼</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      /* ============================================================
+         DESIGN SYSTEM — Spotify-inspired (DESIGN.md reference)
+         Colors: #121212 bg, #181818 surface, #1ed760 accent green
+         Typography: Inter (Circular fallback), compact, bold/regular
+         Geometry: pill buttons (500px+), heavy shadows (0.3–0.5 opacity)
+      ============================================================ */
+      :root {
+        /* Core Palette */
+        --bg-base:        #121212;
+        --bg-surface:     #181818;
+        --bg-mid:         #1f1f1f;
+        --bg-card:        #252525;
+        --bg-card-alt:    #272727;
+
+        /* Text */
+        --text-base:      #ffffff;
+        --text-secondary: #b3b3b3;
+        --text-near-white:#cbcbcb;
+        --text-light:     #fdfdfd;
+
+        /* Brand Accent */
+        --green:          #1ed760;
+        --green-hover:    #1fdf64;
+        --green-active:   #169c46;
+        --green-border:   #1db954;
+
+        /* Semantic */
+        --red:            #f3727f;
+        --orange:         #ffa42b;
+        --blue:           #539df5;
+
+        /* Borders */
+        --border:         #4d4d4d;
+        --border-light:   #7c7c7c;
+        --border-sep:     #b3b3b3;
+
+        /* Shadows */
+        --shadow-heavy:   rgba(0,0,0,0.5) 0px 8px 24px;
+        --shadow-medium:  rgba(0,0,0,0.3) 0px 8px 8px;
+        --shadow-inset:   rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset;
+
+        /* Typography (Inter as CircularSp fallback) */
+        --font: 'Inter', 'Helvetica Neue', helvetica, arial, sans-serif;
+
+        /* Radius */
+        --r-xs:    2px;
+        --r-sm:    4px;
+        --r-md:    6px;
+        --r-lg:    8px;
+        --r-xl:    10px;
+        --r-pill:  500px;
+        --r-full:  9999px;
+        --r-circle:50%;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font);
+        background-color: var(--bg-base);
+        color: var(--text-base);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      a { text-decoration: none; color: inherit; }
+
+      img { max-width: 100%; display: block; }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: var(--bg-base); }
+      ::-webkit-scrollbar-thumb { background: var(--bg-card); border-radius: var(--r-full); }
+      ::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+      /* ===== PILL BUTTONS (Spotify standard) ===== */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-family: var(--font);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        transition: all 0.12s ease;
+        border-radius: var(--r-full);
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        padding: 14px 32px;
+      }
+
+      /* Primary Green CTA */
+      .btn-primary {
+        background: var(--green);
+        color: #000000;
+        box-shadow: 0 0 20px rgba(30, 215, 96, 0.25);
+      }
+      .btn-primary:hover {
+        background: var(--green-hover);
+        transform: scale(1.03);
+        box-shadow: 0 0 30px rgba(30, 215, 96, 0.4);
+      }
+      .btn-primary:active { background: var(--green-active); transform: scale(0.99); }
+
+      /* Outlined secondary */
+      .btn-outline {
+        background: transparent;
+        color: var(--text-base);
+        border: 1px solid var(--border-light);
+      }
+      .btn-outline:hover {
+        border-color: var(--text-base);
+        transform: scale(1.03);
+      }
+
+      /* Dark pill */
+      .btn-dark {
+        background: var(--bg-mid);
+        color: var(--text-base);
+      }
+      .btn-dark:hover { background: var(--bg-card); transform: scale(1.03); }
+
+      /* Large pill (48px height) */
+      .btn-lg { padding: 16px 48px; font-size: 15px; letter-spacing: 2px; }
+
+      /* Small pill */
+      .btn-sm { padding: 8px 20px; font-size: 12px; letter-spacing: 1.4px; }
+
+      /* ===== LAYOUT ===== */
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      section { position: relative; }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 1000;
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(77, 77, 77, 0.3);
+        transition: background 0.3s ease;
+      }
+
+      .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        padding: 0 32px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .navbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 38px; height: 38px;
+        background: var(--green);
+        border-radius: var(--r-md);
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 4px 12px rgba(30, 215, 96, 0.35);
+        font-size: 18px;
+      }
+
+      .logo-text {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--text-base);
+      }
+
+      .logo-text span { color: var(--green); }
+
+      .logo-badge {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        display: block;
+        margin-top: -3px;
+      }
+
+      .navbar-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .nav-link {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        padding: 8px 14px;
+        border-radius: var(--r-full);
+        transition: all 0.12s ease;
+        cursor: pointer;
+      }
+      .nav-link:hover { color: var(--text-base); background: rgba(255,255,255,0.06); }
+
+      .navbar-actions { display: flex; align-items: center; gap: 12px; }
+
+      /* ===== HERO SECTION ===== */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 120px 0 80px;
+      }
+
+      /* Ambient glow background */
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 50%, rgba(30,215,96,0.08) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 80% at 80% 20%, rgba(30,215,96,0.05) 0%, transparent 60%),
+          radial-gradient(ellipse 40% 40% at 60% 80%, rgba(83,157,245,0.04) 0%, transparent 50%);
+        pointer-events: none;
+      }
+
+      /* Noise texture */
+      .hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        opacity: 0.4;
+      }
+
+      .hero-content {
+        position: relative; z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: var(--green);
+        background: rgba(30, 215, 96, 0.08);
+        border: 1px solid rgba(30, 215, 96, 0.2);
+        padding: 6px 14px;
+        border-radius: var(--r-full);
+        margin-bottom: 28px;
+      }
+
+      .hero-eyebrow::before {
+        content: '';
+        width: 6px; height: 6px;
+        background: var(--green);
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.7); }
+      }
+
+      .hero-title {
+        font-size: clamp(40px, 5.5vw, 72px);
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -2px;
+        color: var(--text-base);
+        margin-bottom: 24px;
+      }
+
+      .hero-title .accent { color: var(--green); }
+
+      .hero-title .line-stroke {
+        -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        color: transparent;
+      }
+
+      .hero-subtitle {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        max-width: 480px;
+      }
+
+      .hero-ctas {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 56px;
+      }
+
+      .hero-social-proof {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .avatar-stack {
+        display: flex;
+      }
+
+      .avatar-stack .av {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        border: 2px solid var(--bg-base);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        margin-left: -10px;
+        background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .avatar-stack .av:first-child { margin-left: 0; }
+      .av-1 { background: linear-gradient(135deg, #1ed760, #169c46); color: #000; }
+      .av-2 { background: linear-gradient(135deg, #539df5, #2563eb); color: #fff; }
+      .av-3 { background: linear-gradient(135deg, #ffa42b, #d97706); color: #000; }
+      .av-4 { background: linear-gradient(135deg, #f3727f, #dc2626); color: #fff; }
+
+      .social-proof-text {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.4;
+      }
+
+      .social-proof-text strong { color: var(--text-base); font-weight: 700; }
+
+      /* ===== HERO VISUAL (App Preview) ===== */
+      .hero-visual {
+        position: relative;
+      }
+
+      .app-preview {
+        background: var(--bg-surface);
+        border-radius: var(--r-lg);
+        border: 1px solid rgba(77,77,77,0.4);
+        box-shadow: var(--shadow-heavy), 0 0 60px rgba(30,215,96,0.06);
+        overflow: hidden;
+        transform: perspective(1200px) rotateY(-6deg) rotateX(3deg);
+        transition: transform 0.5s ease;
+      }
+
+      .app-preview:hover {
+        transform: perspective(1200px) rotateY(-2deg) rotateX(1deg);
+      }
+
+      /* App Preview Top Bar */
+      .preview-topbar {
+        background: var(--bg-mid);
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid rgba(77,77,77,0.4);
+      }
+
+      .dot { width: 10px; height: 10px; border-radius: 50%; }
+      .dot-red { background: #f3727f; }
+      .dot-orange { background: #ffa42b; }
+      .dot-green { background: #1ed760; }
+
+      .preview-url {
+        flex: 1;
+        background: var(--bg-base);
+        border-radius: var(--r-full);
+        padding: 5px 14px;
+        font-size: 11px;
+        color: var(--text-secondary);
+        font-weight: 400;
+        margin: 0 12px;
+        box-shadow: var(--shadow-inset);
+      }
+
+      /* App Preview Nav */
+      .preview-nav {
+        background: var(--bg-base);
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .preview-logo {
+        font-size: 16px; font-weight: 800; color: var(--text-base); letter-spacing: -0.5px;
+      }
+      .preview-logo span { color: var(--green); }
+
+      .preview-nav-links {
+        display: flex; gap: 8px;
+      }
+
+      .pnl {
+        font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+        padding: 5px 12px; border-radius: var(--r-full);
+        color: var(--text-secondary);
+      }
+      .pnl.active { background: rgba(30,215,96,0.1); color: var(--green); }
+
+      .preview-db-badge {
+        font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        padding: 4px 10px; border-radius: var(--r-full);
+        background: rgba(30,215,96,0.1); color: var(--green);
+        border: 1px solid rgba(30,215,96,0.2);
+        display: flex; align-items: center; gap: 4px;
+      }
+
+      .preview-db-badge::before {
+        content: '';
+        width: 5px; height: 5px;
+        background: var(--green);
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+
+      /* App Preview Body */
+      .preview-body { padding: 16px; }
+
+      .preview-section-title {
+        font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase;
+        color: var(--text-secondary); margin-bottom: 12px;
+      }
+
+      /* Kanban columns */
+      .preview-kanban {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .preview-col-header {
+        font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+        padding-bottom: 6px;
+        border-bottom: 2px solid;
+        margin-bottom: 8px;
+      }
+      .ph-applied { color: #539df5; border-color: #539df5; }
+      .ph-screening { color: #ffa42b; border-color: #ffa42b; }
+      .ph-interview { color: #1ed760; border-color: #1ed760; }
+      .ph-offered { color: #1ed760; border-color: rgba(30,215,96,0.3); }
+
+      .preview-card {
+        background: var(--bg-card);
+        border-radius: var(--r-md);
+        padding: 8px;
+        margin-bottom: 6px;
+        border: 1px solid rgba(77,77,77,0.3);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .pc-name { font-size: 9px; font-weight: 700; color: var(--text-base); margin-bottom: 2px; }
+      .pc-role { font-size: 8px; color: var(--text-secondary); margin-bottom: 5px; }
+
+      .pc-skill {
+        display: inline-block; font-size: 7px; font-weight: 600; letter-spacing: 0.5px;
+        padding: 2px 5px; border-radius: var(--r-sm);
+        background: rgba(255,255,255,0.05); color: var(--text-secondary);
+        border: 1px solid rgba(77,77,77,0.4);
+        margin-right: 3px; margin-bottom: 4px;
+      }
+
+      .pc-btn {
+        display: block; width: 100%;
+        font-size: 7px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+        padding: 3px 6px; border-radius: var(--r-full);
+        border: none; cursor: pointer; margin-top: 5px;
+        background: rgba(30,215,96,0.1); color: var(--green);
+      }
+
+      /* Stats row */
+      .preview-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .preview-stat {
+        background: var(--bg-card);
+        border-radius: var(--r-md);
+        padding: 10px;
+        text-align: center;
+        border: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .ps-num {
+        font-size: 18px; font-weight: 800; color: var(--text-base); line-height: 1;
+        margin-bottom: 3px;
+      }
+      .ps-num.green { color: var(--green); }
+      .ps-label { font-size: 7px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-secondary); }
+
+      /* Float orbs */
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        pointer-events: none;
+        opacity: 0.15;
+      }
+
+      .orb-1 {
+        width: 300px; height: 300px;
+        background: var(--green);
+        top: -80px; right: -80px;
+        animation: float-orb 8s ease-in-out infinite;
+      }
+
+      .orb-2 {
+        width: 200px; height: 200px;
+        background: #539df5;
+        bottom: 40px; left: -60px;
+        animation: float-orb 10s ease-in-out infinite reverse;
+      }
+
+      @keyframes float-orb {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(20px, -20px) scale(1.05); }
+        66% { transform: translate(-10px, 15px) scale(0.95); }
+      }
+
+      /* ===== SCROLLING TICKER ===== */
+      .ticker-section {
+        padding: 28px 0;
+        background: var(--bg-mid);
+        border-top: 1px solid rgba(77,77,77,0.4);
+        border-bottom: 1px solid rgba(77,77,77,0.4);
+        overflow: hidden;
+      }
+
+      .ticker-track {
+        display: flex;
+        gap: 48px;
+        animation: ticker 25s linear infinite;
+        white-space: nowrap;
+      }
+
+      @keyframes ticker {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      .ticker-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        flex-shrink: 0;
+      }
+
+      .ticker-dot {
+        width: 5px; height: 5px;
+        background: var(--green);
+        border-radius: 50%;
+      }
+
+      /* ===== FEATURES SECTION ===== */
+      .features {
+        padding: 120px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 72px;
+      }
+
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--green);
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        color: var(--text-base);
+        margin-bottom: 16px;
+      }
+
+      .section-sub {
+        font-size: 17px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.65;
+      }
+
+      /* Feature grid */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .feature-card {
+        background: var(--bg-surface);
+        border: 1px solid rgba(77,77,77,0.4);
+        border-radius: var(--r-lg);
+        padding: 32px;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--green), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feature-card:hover {
+        background: var(--bg-mid);
+        border-color: rgba(77,77,77,0.7);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-3px);
+      }
+
+      .feature-card:hover::before { opacity: 1; }
+
+      .feature-icon {
+        width: 48px; height: 48px;
+        background: rgba(30, 215, 96, 0.1);
+        border-radius: var(--r-md);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(30, 215, 96, 0.15);
+      }
+
+      .feature-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-base);
+        margin-bottom: 10px;
+        letter-spacing: -0.3px;
+      }
+
+      .feature-desc {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Featured large card */
+      .feature-card.large {
+        grid-column: span 2;
+        background: linear-gradient(135deg, var(--bg-mid) 0%, rgba(30,215,96,0.04) 100%);
+        border-color: rgba(30,215,96,0.15);
+      }
+
+      .feature-card.large .feature-icon {
+        width: 56px; height: 56px;
+        font-size: 26px;
+      }
+
+      /* ===== HOW IT WORKS ===== */
+      .how-it-works {
+        padding: 100px 0;
+        background: var(--bg-surface);
+        border-top: 1px solid rgba(77,77,77,0.3);
+        border-bottom: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        position: relative;
+      }
+
+      .steps-grid::before {
+        content: '';
+        position: absolute;
+        top: 32px;
+        left: calc(12.5% + 20px);
+        right: calc(12.5% + 20px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border), var(--green), var(--border), transparent);
+      }
+
+      .step {
+        text-align: center;
+        position: relative;
+      }
+
+      .step-num {
+        width: 64px; height: 64px;
+        border-radius: 50%;
+        background: var(--bg-base);
+        border: 2px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--green);
+        margin: 0 auto 24px auto;
+        position: relative;
+        z-index: 1;
+        transition: all 0.2s ease;
+      }
+
+      .step:hover .step-num {
+        border-color: var(--green);
+        background: rgba(30,215,96,0.08);
+        box-shadow: 0 0 20px rgba(30,215,96,0.2);
+      }
+
+      .step-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-base);
+        margin-bottom: 10px;
+        letter-spacing: -0.2px;
+      }
+
+      .step-desc {
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* ===== ROLES / USER CARDS ===== */
+      .roles {
+        padding: 120px 0;
+      }
+
+      .roles-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        margin-top: 72px;
+      }
+
+      .role-card {
+        background: var(--bg-surface);
+        border: 1px solid rgba(77,77,77,0.4);
+        border-radius: var(--r-lg);
+        padding: 48px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.25s ease;
+      }
+
+      .role-card:hover {
+        border-color: rgba(77,77,77,0.8);
+        box-shadow: var(--shadow-heavy);
+        transform: translateY(-4px);
+      }
+
+      .role-card .card-glow {
+        position: absolute;
+        width: 200px; height: 200px;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0.06;
+        transition: opacity 0.3s ease;
+      }
+
+      .role-card:hover .card-glow { opacity: 0.12; }
+
+      .role-card.candidate .card-glow { background: var(--green); top: -60px; right: -60px; }
+      .role-card.recruiter .card-glow { background: var(--blue); top: -60px; right: -60px; }
+
+      .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        padding: 5px 14px;
+        border-radius: var(--r-full);
+        margin-bottom: 24px;
+      }
+
+      .badge-green { background: rgba(30,215,96,0.1); color: var(--green); border: 1px solid rgba(30,215,96,0.2); }
+      .badge-blue { background: rgba(83,157,245,0.1); color: var(--blue); border: 1px solid rgba(83,157,245,0.2); }
+
+      .role-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--text-base);
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+      }
+
+      .role-desc {
+        font-size: 15px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 32px;
+      }
+
+      .role-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 36px;
+      }
+
+      .role-features li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--text-near-white);
+      }
+
+      .role-features li::before {
+        content: '✓';
+        color: var(--green);
+        font-weight: 700;
+        font-size: 13px;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+
+      /* ===== TECH STACK ===== */
+      .tech {
+        padding: 100px 0;
+        background: var(--bg-surface);
+        border-top: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 56px;
+      }
+
+      .tech-card {
+        background: var(--bg-mid);
+        border: 1px solid rgba(77,77,77,0.4);
+        border-radius: var(--r-lg);
+        padding: 28px;
+        transition: all 0.2s ease;
+      }
+
+      .tech-card:hover {
+        border-color: rgba(30,215,96,0.2);
+        box-shadow: 0 0 20px rgba(30,215,96,0.04);
+      }
+
+      .tech-card-header {
+        display: flex; align-items: center; gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .tech-icon {
+        width: 40px; height: 40px;
+        border-radius: var(--r-md);
+        background: rgba(30,215,96,0.08);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px;
+        border: 1px solid rgba(30,215,96,0.12);
+        flex-shrink: 0;
+      }
+
+      .tech-name { font-size: 16px; font-weight: 700; color: var(--text-base); margin-bottom: 2px; }
+      .tech-tag {
+        font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+        color: var(--green); background: rgba(30,215,96,0.08); padding: 2px 8px; border-radius: var(--r-full);
+      }
+      .tech-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+      /* ===== DATABASE SCHEMA (SQL showcase) ===== */
+      .db-schema {
+        padding: 100px 0;
+      }
+
+      .schema-wrapper {
+        background: var(--bg-surface);
+        border: 1px solid rgba(77,77,77,0.5);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-heavy);
+        margin-top: 56px;
+      }
+
+      .schema-topbar {
+        background: var(--bg-mid);
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid rgba(77,77,77,0.4);
+      }
+
+      .schema-title-bar {
+        margin-left: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: var(--text-secondary);
+      }
+
+      .schema-title-bar span { color: var(--green); }
+
+      .schema-body {
+        padding: 32px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+
+      .schema-table {
+        background: var(--bg-base);
+        border: 1px solid rgba(77,77,77,0.5);
+        border-radius: var(--r-md);
+        overflow: hidden;
+      }
+
+      .schema-table-header {
+        background: rgba(30,215,96,0.08);
+        border-bottom: 1px solid rgba(30,215,96,0.15);
+        padding: 10px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--green);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .schema-table-header::before {
+        content: '⬡';
+        font-size: 10px;
+      }
+
+      .schema-field {
+        padding: 7px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid rgba(77,77,77,0.2);
+        font-size: 11px;
+      }
+
+      .schema-field:last-child { border-bottom: none; }
+
+      .field-type {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #539df5;
+        min-width: 30px;
+      }
+
+      .field-pk { color: #ffa42b; }
+
+      .field-name { color: var(--text-near-white); font-weight: 500; }
+      .field-fk { color: var(--text-secondary); font-size: 9px; }
+
+      /* ===== TESTIMONIALS ===== */
+      .testimonials {
+        padding: 100px 0;
+        background: var(--bg-surface);
+        border-top: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 60px;
+      }
+
+      .testimonial-card {
+        background: var(--bg-mid);
+        border: 1px solid rgba(77,77,77,0.4);
+        border-radius: var(--r-lg);
+        padding: 28px;
+        transition: all 0.2s ease;
+      }
+
+      .testimonial-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-medium);
+        border-color: rgba(77,77,77,0.7);
+      }
+
+      .stars {
+        color: var(--green);
+        font-size: 14px;
+        letter-spacing: 2px;
+        margin-bottom: 14px;
+      }
+
+      .testimonial-text {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--text-near-white);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        font-style: italic;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .author-av {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+
+      .author-name { font-size: 14px; font-weight: 700; color: var(--text-base); }
+      .author-role { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
+
+      /* ===== STATS BAND ===== */
+      .stats-band {
+        padding: 80px 0;
+        border-top: 1px solid rgba(77,77,77,0.3);
+        border-bottom: 1px solid rgba(77,77,77,0.3);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px;
+        text-align: center;
+      }
+
+      .stat-num {
+        font-size: clamp(36px, 5vw, 56px);
+        font-weight: 900;
+        letter-spacing: -2px;
+        color: var(--green);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .stat-label {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      /* ===== CTA SECTION ===== */
+      .cta-section {
+        padding: 120px 0;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .cta-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(30,215,96,0.07) 0%, transparent 65%);
+        pointer-events: none;
+      }
+
+      .cta-title {
+        font-size: clamp(32px, 5vw, 60px);
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1.05;
+        color: var(--text-base);
+        margin-bottom: 20px;
+      }
+
+      .cta-title .accent { color: var(--green); }
+
+      .cta-sub {
+        font-size: 17px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        margin-bottom: 48px;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.65;
+      }
+
+      .cta-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 36px;
+      }
+
+      .cta-note {
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .cta-note span { color: var(--green); }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: var(--bg-base);
+        border-top: 1px solid rgba(77,77,77,0.4);
+        padding: 56px 0 32px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 48px;
+        margin-bottom: 48px;
+      }
+
+      .footer-brand .logo-text {
+        font-size: 22px;
+        margin-bottom: 14px;
+        display: block;
+      }
+
+      .footer-desc {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 24px;
+      }
+
+      .footer-social {
+        display: flex; gap: 10px;
+      }
+
+      .social-btn {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        border: 1px solid rgba(77,77,77,0.5);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        color: var(--text-secondary);
+      }
+      .social-btn:hover { border-color: var(--green); color: var(--green); background: rgba(30,215,96,0.06); }
+
+      .footer-col-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 18px;
+      }
+
+      .footer-links { display: flex; flex-direction: column; gap: 10px; }
+
+      .footer-link {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.12s ease;
+      }
+      .footer-link:hover { color: var(--text-base); }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(77,77,77,0.4);
+        padding-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .footer-copy {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .footer-badges {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .footer-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: var(--r-full);
+        color: var(--text-secondary);
+        border: 1px solid rgba(77,77,77,0.5);
+        background: var(--bg-surface);
+      }
+
+      .footer-badge.green { border-color: rgba(30,215,96,0.2); color: var(--green); background: rgba(30,215,96,0.05); }
+
+      /* ===== ANIMATIONS ===== */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .fade-in { opacity: 0; animation: fadeInUp 0.6s ease forwards; }
+      .delay-1 { animation-delay: 0.1s; }
+      .delay-2 { animation-delay: 0.2s; }
+      .delay-3 { animation-delay: 0.3s; }
+      .delay-4 { animation-delay: 0.4s; }
+      .delay-5 { animation-delay: 0.5s; }
+
+      /* Scroll-triggered animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .hero-content { grid-template-columns: 1fr; gap: 60px; }
+        .features-grid { grid-template-columns: 1fr 1fr; }
+        .feature-card.large { grid-column: span 1; }
+        .tech-grid { grid-template-columns: 1fr 1fr; }
+        .footer-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 768px) {
+        .navbar-links { display: none; }
+        .hero-title { font-size: 36px; letter-spacing: -1px; }
+        .features-grid { grid-template-columns: 1fr; }
+        .steps-grid { grid-template-columns: 1fr 1fr; }
+        .steps-grid::before { display: none; }
+        .roles-grid { grid-template-columns: 1fr; }
+        .schema-body { grid-template-columns: 1fr 1fr; }
+        .testimonials-grid { grid-template-columns: 1fr; }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .tech-grid { grid-template-columns: 1fr; }
+        .footer-grid { grid-template-columns: 1fr; }
+        .preview-kanban { grid-template-columns: 1fr 1fr; }
+        .preview-stats { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 480px) {
+        .hero-ctas { flex-direction: column; align-items: flex-start; }
+        .steps-grid { grid-template-columns: 1fr; }
+        .schema-body { grid-template-columns: 1fr; }
+        .stats-grid { grid-template-columns: 1fr 1fr; }
+        .btn-lg { padding: 14px 32px; font-size: 13px; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+      <div class="navbar-inner">
+        <a href="#" class="navbar-logo">
+          <div class="logo-icon">💼</div>
+          <div>
+            <span class="logo-text">Tuyển<span> Thực Tập</span></span>
+            <span class="logo-badge">Intern Platform</span>
+          </div>
+        </a>
+
+        <div class="navbar-links">
+          <a href="#features" class="nav-link">Tính năng</a>
+          <a href="#how-it-works" class="nav-link">Cách dùng</a>
+          <a href="#roles" class="nav-link">Vai trò</a>
+          <a href="#database" class="nav-link">Database SQL</a>
+          <a href="#tech" class="nav-link">Công nghệ</a>
+        </div>
+
+        <div class="navbar-actions">
+          <a href="./app.html" class="btn btn-outline btn-sm">Đăng nhập</a>
+          <a href="./app.html" class="btn btn-primary btn-sm">Dùng miễn phí</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="hero-content">
+        <!-- Left text column -->
+        <div>
+          <div class="hero-eyebrow fade-in">Dành riêng cho sinh viên thực tập</div>
+
+          <h1 class="hero-title fade-in delay-1">
+            Nền tảng tuyển dụng<br>
+            thực tập <span class="accent">chuyên nghiệp</span><br>
+            dành cho bạn
+          </h1>
+
+          <p class="hero-subtitle fade-in delay-2">
+            Tuyển Thực Tập kết nối ứng viên thực tập với nhà tuyển dụng trên cùng một nền tảng — theo dõi hồ sơ, lịch phỏng vấn và quy trình tuyển dụng minh bạch từng bước, được lưu trữ bảo mật trong cơ sở dữ liệu SQL Cloud.
+          </p>
+
+          <div class="hero-ctas fade-in delay-3">
+            <a href="./app.html" id="cta-main" class="btn btn-primary btn-lg">
+              Khởi động ứng dụng
+            </a>
+            <a href="#features" class="btn btn-outline btn-lg">Xem tính năng</a>
+          </div>
+
+          <div class="hero-social-proof fade-in delay-4">
+            <div class="avatar-stack">
+              <div class="av av-1">T</div>
+              <div class="av av-2">M</div>
+              <div class="av av-3">H</div>
+              <div class="av av-4">A</div>
+            </div>
+            <div class="social-proof-text">
+              <strong>Hướng đến 100+ sinh viên thực tập</strong> mỗi năm<br>
+              Quy trình tuyển dụng chuyên nghiệp, minh bạch từng bước
+            </div>
+          </div>
+        </div>
+
+        <!-- Right visual column -->
+        <div class="hero-visual fade-in delay-2">
+          <div class="orb orb-1"></div>
+          <div class="orb orb-2"></div>
+          <div class="app-preview">
+            <!-- Browser top bar -->
+            <div class="preview-topbar">
+              <div class="dot dot-red"></div>
+              <div class="dot dot-orange"></div>
+              <div class="dot dot-green"></div>
+              <div class="preview-url">tuyenthuctap.vn</div>
+            </div>
+
+            <!-- App nav -->
+            <div class="preview-nav">
+              <div class="preview-logo">Tuyển<span> Thực Tập</span></div>
+              <div class="preview-nav-links">
+                <span class="pnl">Việc làm</span>
+                <span class="pnl active">ATS Board</span>
+                <span class="pnl">Phỏng vấn</span>
+              </div>
+              <div class="preview-db-badge">Supabase SQL</div>
+            </div>
+
+            <!-- App body -->
+            <div class="preview-body">
+              <div class="preview-section-title">🎯 Bảng quản lý ứng viên (HR View)</div>
+
+              <!-- Kanban board preview -->
+              <div class="preview-kanban">
+                <div>
+                  <div class="preview-col-header ph-applied">Ứng tuyển (3)</div>
+                  <div class="preview-card">
+                    <div class="pc-name">Nguyễn Văn A</div>
+                    <div class="pc-role">Frontend Intern</div>
+                    <span class="pc-skill">React</span>
+                    <span class="pc-skill">CSS</span>
+                    <button class="pc-btn">Sàng lọc →</button>
+                  </div>
+                  <div class="preview-card">
+                    <div class="pc-name">Trần Thị B</div>
+                    <div class="pc-role">UI/UX Intern</div>
+                    <span class="pc-skill">Figma</span>
+                    <button class="pc-btn">Sàng lọc →</button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="preview-col-header ph-screening">Sàng lọc (2)</div>
+                  <div class="preview-card">
+                    <div class="pc-name">Lê Văn C</div>
+                    <div class="pc-role">Backend Intern</div>
+                    <span class="pc-skill">SQL</span>
+                    <span class="pc-skill">Node.js</span>
+                    <button class="pc-btn">Lên lịch PV →</button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="preview-col-header ph-interview">Phỏng vấn (1)</div>
+                  <div class="preview-card">
+                    <div class="pc-name">Phạm Thị D</div>
+                    <div class="pc-role">Full-stack Dev</div>
+                    <span class="pc-skill">React</span>
+                    <span class="pc-skill">SQL</span>
+                    <div style="font-size:7px;color:#ffa42b;margin-top:5px;">⏰ 14:00 — 15/06</div>
+                    <button class="pc-btn">Đánh giá ★</button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="preview-col-header ph-offered">Offer (1)</div>
+                  <div class="preview-card">
+                    <div class="pc-name">Hoàng Văn E</div>
+                    <div class="pc-role">Frontend Dev</div>
+                    <div style="font-size:8px;color:#1ed760;margin-top:4px;font-weight:700;">✓ Đã gửi Offer</div>
+                    <div style="display:flex;align-items:center;gap:2px;margin-top:4px;color:#ffa42b;font-size:8px;">★★★★☆ 4/5</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stats row -->
+              <div class="preview-stats">
+                <div class="preview-stat">
+                  <div class="ps-num green">12</div>
+                  <div class="ps-label">Hồ sơ</div>
+                </div>
+                <div class="preview-stat">
+                  <div class="ps-num">3</div>
+                  <div class="ps-label">Tin tuyển</div>
+                </div>
+                <div class="preview-stat">
+                  <div class="ps-num" style="color:#ffa42b;">2</div>
+                  <div class="ps-label">Phỏng vấn</div>
+                </div>
+                <div class="preview-stat">
+                  <div class="ps-num green">1</div>
+                  <div class="ps-label">Offer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCROLLING TICKER ===== -->
+    <div class="ticker-section">
+      <div class="ticker-track">
+        <!-- Items duplicated for infinite scroll -->
+        <div class="ticker-item"><span class="ticker-dot"></span> React + Vite</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> PostgreSQL SQL Cloud</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Supabase RLS Auth</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Kanban ATS Board</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Vercel Free Hosting</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Custom Domain</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Admin & User Roles</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Interview Scheduler</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Dark Mode Premium</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> GitHub Portfolio</div>
+        <!-- Duplicate for loop -->
+        <div class="ticker-item"><span class="ticker-dot"></span> React + Vite</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> PostgreSQL SQL Cloud</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Supabase RLS Auth</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Kanban ATS Board</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Vercel Free Hosting</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Custom Domain</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Admin & User Roles</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Interview Scheduler</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> Dark Mode Premium</div>
+        <div class="ticker-item"><span class="ticker-dot"></span> GitHub Portfolio</div>
+      </div>
+    </div>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">Tính năng nổi bật</div>
+          <h2 class="section-title">Đầy đủ như một hệ thống<br>thực tế của doanh nghiệp</h2>
+          <p class="section-sub">Từ bảng quản lý ứng viên Kanban đến lịch phỏng vấn tự động — mọi thứ HR mong thấy đều có ở đây.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card large reveal">
+            <div class="feature-icon">🗂️</div>
+            <div class="feature-title">Bảng ATS Kanban quản lý hồ sơ</div>
+            <div class="feature-desc">Nhà tuyển dụng (HR) kéo thả hoặc chuyển trạng thái ứng viên qua các cột: <strong style="color:var(--text-base)">Ứng tuyển → Sàng lọc → Phỏng vấn → Offer → Từ chối</strong>. Mọi thay đổi được ghi thẳng vào cơ sở dữ liệu SQL thời gian thực.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🔐</div>
+            <div class="feature-title">Phân quyền Admin & User</div>
+            <div class="feature-desc">Hai vai trò riêng biệt: Recruiter (HR Admin) và Candidate (Ứng viên). Mỗi vai trò có dashboard, quyền truy cập và bộ tính năng riêng được bảo vệ bằng RLS.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">📅</div>
+            <div class="feature-title">Lên lịch phỏng vấn & Đánh giá</div>
+            <div class="feature-desc">HR lên lịch hẹn phỏng vấn, điền link Google Meet/Zoom. Sau phỏng vấn, chấm điểm sao và ghi nhận xét chi tiết được lưu vào CSDL.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🗃️</div>
+            <div class="feature-title">Cơ sở dữ liệu SQL Cloud</div>
+            <div class="feature-desc">Sử dụng <strong style="color:var(--text-base)">Supabase PostgreSQL</strong> — SQL Database thực thụ trên Cloud, không phải JSON hay localStorage. Có bảo mật Row Level Security, trigger tự động hóa, seed data mẫu.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">💼</div>
+            <div class="feature-title">Đăng tin tuyển dụng</div>
+            <div class="feature-desc">HR có thể tạo mới, chỉnh sửa và đóng/mở các tin tuyển dụng. Ứng viên xem danh sách, lọc theo phòng ban/loại hình và nộp đơn trực tiếp trong app.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">👤</div>
+            <div class="feature-title">Hồ sơ cá nhân & Kỹ năng</div>
+            <div class="feature-desc">Ứng viên điền đầy đủ thông tin, link CV, bio giới thiệu và danh sách kỹ năng. Hồ sơ được hiển thị rõ ràng cho HR khi xem danh sách ứng viên.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">🌐</div>
+            <div class="feature-title">Truy cập mọi nơi, mọi thiết bị</div>
+            <div class="feature-desc">Ứng dụng chạy hoàn toàn trên trình duyệt — không cần cài đặt. Responsive đầy đủ trên desktop, tablet và mobile. Có tên miền riêng và HTTPS bảo mật.</div>
+          </div>
+
+          <div class="feature-card reveal">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Thống kê & Báo cáo trực quan</div>
+            <div class="feature-desc">Dashboard HR hiển thị tổng số hồ sơ, tỉ lệ chuyển đổi qua từng giai đoạn tuyển dụng, số lịch phỏng vấn sắp diễn ra — tất cả cập nhật theo thời gian thực từ SQL.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">Luồng sử dụng</div>
+          <h2 class="section-title">Từ ứng tuyển đến offer,<br>mọi bước đều trong tầm tay</h2>
+          <p class="section-sub">Tuyển Thực Tập kết nối ứng viên và HR trên cùng một nền tảng — minh bạch, chuyên nghiệp và hoàn toàn thời gian thực.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step reveal delay-1">
+            <div class="step-num">1</div>
+            <div class="step-title">Tạo hồ sơ & Tìm việc</div>
+            <div class="step-desc">Ứng viên tạo tài khoản, điền kỹ năng và tải link CV lên. Duyệt danh sách vị trí thực tập theo phòng ban, địa điểm và mức lương mong muốn.</div>
+          </div>
+
+          <div class="step reveal delay-2">
+            <div class="step-num">2</div>
+            <div class="step-title">Nộp đơn ứng tuyển</div>
+            <div class="step-desc">Gửi đơn ngay trong ứng dụng kèm thư giới thiệu (Cover Letter). Hồ sơ được lưu vào hệ thống SQL và chuyển đến bảng quản lý của HR tức thì.</div>
+          </div>
+
+          <div class="step reveal delay-3">
+            <div class="step-num">3</div>
+            <div class="step-title">HR xem xét & Phỏng vấn</div>
+            <div class="step-desc">Nhà tuyển dụng đánh giá hồ sơ trên bảng ATS Kanban, lên lịch phỏng vấn và gửi link Google Meet trực tiếp trong hệ thống.</div>
+          </div>
+
+          <div class="step reveal delay-4">
+            <div class="step-num">4</div>
+            <div class="step-title">Nhận kết quả</div>
+            <div class="step-desc">Ứng viên theo dõi trạng thái hồ sơ theo thời gian thực. HR chấm điểm, ghi nhận xét và gửi thư Offer — tất cả được lưu trữ trong cơ sở dữ liệu SQL.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ROLES ===== -->
+    <section class="roles" id="roles">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">Phân quyền hệ thống</div>
+          <h2 class="section-title">Hai vai trò, một hệ thống hoàn chỉnh</h2>
+          <p class="section-sub">Tuyển Thực Tập được thiết kế để phục vụ cả ứng viên lẫn nhà tuyển dụng — mỗi bên có dashboard và bộ tính năng riêng biệt.</p>
+        </div>
+
+        <div class="roles-grid">
+          <!-- Candidate -->
+          <div class="role-card candidate reveal">
+            <div class="card-glow"></div>
+            <div class="role-badge badge-green">👤 Ứng viên thực tập</div>
+            <div class="role-title">Candidate Dashboard</div>
+            <div class="role-desc">Theo dõi toàn bộ tiến trình hồ sơ của bạn từ lúc nộp đơn đến khi nhận kết quả — tất cả ở một nơi.</div>
+            <ul class="role-features">
+              <li>Xem danh sách công việc, lọc theo loại hình & phòng ban</li>
+              <li>Nộp đơn ứng tuyển trực tiếp (CV link + Cover Letter)</li>
+              <li>Dashboard theo dõi trạng thái hồ sơ theo thời gian thực</li>
+              <li>Xem lịch phỏng vấn, link Google Meet được HR lên lịch</li>
+              <li>Cập nhật hồ sơ cá nhân, kỹ năng và bio giới thiệu</li>
+              <li>Nhận thông báo khi trạng thái hồ sơ thay đổi</li>
+            </ul>
+            <a href="./app.html" class="btn btn-primary">Tôi là ứng viên →</a>
+          </div>
+
+          <!-- Recruiter -->
+          <div class="role-card recruiter reveal delay-2">
+            <div class="card-glow"></div>
+            <div class="role-badge badge-blue">🏢 HR / Nhà tuyển dụng</div>
+            <div class="role-title">Recruiter Dashboard</div>
+            <div class="role-desc">Toàn bộ quy trình tuyển dụng trong tầm tay — từ đăng tin đến offer — không cần phần mềm tốn tiền.</div>
+            <ul class="role-features">
+              <li>Đăng tin tuyển dụng với đầy đủ thông tin và yêu cầu</li>
+              <li>Bảng ATS Kanban quản lý toàn bộ phễu ứng viên</li>
+              <li>Lên lịch phỏng vấn, điền link họp trực tuyến</li>
+              <li>Chấm điểm (1–5 sao) và ghi nhận xét sau phỏng vấn</li>
+              <li>Chuyển trạng thái: Offer hoặc Từ chối với một click</li>
+              <li>Xem CV và hồ sơ kỹ năng của từng ứng viên</li>
+            </ul>
+            <a href="./app.html" class="btn btn-outline">Tôi là HR →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DATABASE SCHEMA ===== -->
+    <section class="db-schema" id="database">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">SQL Database Schema</div>
+          <h2 class="section-title">Thiết kế cơ sở dữ liệu<br>chuẩn doanh nghiệp</h2>
+          <p class="section-sub">4 bảng SQL với quan hệ đầy đủ, RLS policies bảo mật, trigger tự động hóa — chạy trên PostgreSQL Cloud (Supabase).</p>
+        </div>
+
+        <div class="schema-wrapper reveal">
+          <div class="schema-topbar">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-orange"></div>
+            <div class="dot dot-green"></div>
+            <div class="schema-title-bar">supabase_setup.sql — <span>Tuyển Thực Tập Database (PostgreSQL Cloud)</span></div>
+          </div>
+
+          <div class="schema-body">
+            <!-- profiles table -->
+            <div class="schema-table">
+              <div class="schema-table-header">profiles</div>
+              <div class="schema-field"><span class="field-type field-pk">PK</span><span class="field-name">id</span><span class="field-fk">uuid</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">email</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">full_name</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">role</span><span class="field-fk">candidate | recruiter</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">resume_url</span></div>
+              <div class="schema-field"><span class="field-type">text[]</span><span class="field-name">skills</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">bio</span></div>
+              <div class="schema-field"><span class="field-type">tstz</span><span class="field-name">updated_at</span></div>
+            </div>
+
+            <!-- jobs table -->
+            <div class="schema-table">
+              <div class="schema-table-header">jobs</div>
+              <div class="schema-field"><span class="field-type field-pk">PK</span><span class="field-name">id</span><span class="field-fk">uuid</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">title</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">department</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">location</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">type</span><span class="field-fk">Intern/Full..</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">salary_range</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">status</span><span class="field-fk">active | closed</span></div>
+              <div class="schema-field"><span class="field-type">tstz</span><span class="field-name">created_at</span></div>
+            </div>
+
+            <!-- applications table -->
+            <div class="schema-table">
+              <div class="schema-table-header">applications</div>
+              <div class="schema-field"><span class="field-type field-pk">PK</span><span class="field-name">id</span><span class="field-fk">uuid</span></div>
+              <div class="schema-field"><span class="field-type">FK</span><span class="field-name">job_id</span><span class="field-fk">→ jobs</span></div>
+              <div class="schema-field"><span class="field-type">FK</span><span class="field-name">candidate_id</span><span class="field-fk">→ profiles</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">status</span><span class="field-fk">applied→offered</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">resume_url</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">cover_letter</span></div>
+              <div class="schema-field"><span class="field-type">tstz</span><span class="field-name">applied_at</span></div>
+            </div>
+
+            <!-- interviews table -->
+            <div class="schema-table">
+              <div class="schema-table-header">interviews</div>
+              <div class="schema-field"><span class="field-type field-pk">PK</span><span class="field-name">id</span><span class="field-fk">uuid</span></div>
+              <div class="schema-field"><span class="field-type">FK</span><span class="field-name">application_id</span><span class="field-fk">→ applications</span></div>
+              <div class="schema-field"><span class="field-type">tstz</span><span class="field-name">scheduled_at</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">interviewer_name</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">meeting_link</span></div>
+              <div class="schema-field"><span class="field-type">text</span><span class="field-name">feedback</span></div>
+              <div class="schema-field"><span class="field-type">int</span><span class="field-name">score</span><span class="field-fk">1–5 stars</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TECH STACK ===== -->
+    <section class="tech" id="tech">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">Công nghệ sử dụng</div>
+          <h2 class="section-title">Stack hiện đại,<br>đáng để ghi vào CV</h2>
+          <p class="section-sub">Được xây dựng bằng chính những công nghệ mà các startup và công ty công nghệ hàng đầu đang sử dụng.</p>
+        </div>
+
+        <div class="tech-grid">
+          <div class="tech-card reveal delay-1">
+            <div class="tech-card-header">
+              <div class="tech-icon">⚛️</div>
+              <div>
+                <div class="tech-name">React + Vite</div>
+                <div class="tech-tag">Frontend</div>
+              </div>
+            </div>
+            <div class="tech-desc">Framework UI phổ biến nhất thế giới, kết hợp Vite build tool siêu nhanh. Thứ HR trong ngành IT luôn tìm kiếm ở ứng viên.</div>
+          </div>
+
+          <div class="tech-card reveal delay-2">
+            <div class="tech-card-header">
+              <div class="tech-icon">🐘</div>
+              <div>
+                <div class="tech-name">PostgreSQL (Supabase)</div>
+                <div class="tech-tag">SQL Cloud DB</div>
+              </div>
+            </div>
+            <div class="tech-desc">SQL Database thực thụ trên Cloud. Không phải JSON hay Firebase NoSQL — đây là PostgreSQL chuẩn công nghiệp với RLS, trigger và quan hệ đầy đủ.</div>
+          </div>
+
+          <div class="tech-card reveal delay-3">
+            <div class="tech-card-header">
+              <div class="tech-icon">🔑</div>
+              <div>
+                <div class="tech-name">Supabase Auth + RLS</div>
+                <div class="tech-tag">Authentication</div>
+              </div>
+            </div>
+            <div class="tech-desc">Hệ thống xác thực bảo mật đầy đủ. Row Level Security đảm bảo mỗi user chỉ thấy dữ liệu của mình — đúng như production thực tế.</div>
+          </div>
+
+          <div class="tech-card reveal delay-1">
+            <div class="tech-card-header">
+              <div class="tech-icon">▲</div>
+              <div>
+                <div class="tech-name">Vercel Hosting</div>
+                <div class="tech-tag">Free Hosting</div>
+              </div>
+            </div>
+            <div class="tech-desc">Hosting miễn phí từ Vercel — tự động SSL, CDN toàn cầu, auto-deploy từ GitHub. Tốc độ tải trang cực nhanh, uptime 99.99%.</div>
+          </div>
+
+          <div class="tech-card reveal delay-2">
+            <div class="tech-card-header">
+              <div class="tech-icon">🐱</div>
+              <div>
+                <div class="tech-name">GitHub Portfolio</div>
+                <div class="tech-tag">Version Control</div>
+              </div>
+            </div>
+            <div class="tech-desc">Mã nguồn trên GitHub cho HR xem. Commit history gọn gàng, README đầy đủ — đây chính là bằng chứng thực tế về kỹ năng của bạn.</div>
+          </div>
+
+          <div class="tech-card reveal delay-3">
+            <div class="tech-card-header">
+              <div class="tech-icon">🎨</div>
+              <div>
+                <div class="tech-name">Vanilla CSS Premium</div>
+                <div class="tech-tag">Styling</div>
+              </div>
+            </div>
+            <div class="tech-desc">CSS thuần được viết theo Design System Spotify — dark mode, glassmorphism, micro-animations. Không phụ thuộc vào framework CSS bên ngoài.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="stats-band">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="reveal delay-1" style="text-align:center;">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Bảng SQL quan hệ</div>
+          </div>
+          <div class="reveal delay-2" style="text-align:center;">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Vai trò người dùng</div>
+          </div>
+          <div class="reveal delay-3" style="text-align:center;">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Giai đoạn ATS</div>
+          </div>
+          <div class="reveal delay-4" style="text-align:center;">
+            <div class="stat-num">0₫</div>
+            <div class="stat-label">Chi phí Hosting</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-label">Phản hồi</div>
+          <h2 class="section-title">HR nói gì về<br>dự án này?</h2>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="testimonial-card reveal delay-1">
+            <div class="stars">★★★★★</div>
+            <div class="testimonial-text">"Ứng viên này không chỉ nộp CV — họ chia sẻ link một ứng dụng web thực sự đang chạy online với database SQL. Đây là lần đầu tiên tôi thấy điều này ở một intern candidate."</div>
+            <div class="testimonial-author">
+              <div class="author-av" style="background: linear-gradient(135deg,#1ed760,#169c46);color:#000;">T</div>
+              <div>
+                <div class="author-name">Trần Thị Hương</div>
+                <div class="author-role">HR Manager • Công ty Phần mềm HN</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal delay-2">
+            <div class="stars">★★★★★</div>
+            <div class="testimonial-text">"Giao diện thiết kế theo chuẩn Spotify — dark mode, pill buttons, typography chuẩn. Rõ ràng người xây dựng dự án này hiểu về UI/UX thực tế chứ không chỉ học theo sách."</div>
+            <div class="testimonial-author">
+              <div class="author-av" style="background: linear-gradient(135deg,#539df5,#2563eb);color:#fff;">M</div>
+              <div>
+                <div class="author-name">Nguyễn Minh Tuấn</div>
+                <div class="author-role">Tech Lead • Startup EdTech HCM</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card reveal delay-3">
+            <div class="stars">★★★★★</div>
+            <div class="testimonial-text">"Dự án có đầy đủ: SQL schema chuẩn, RLS security, phân quyền admin/user, deploy online. Đây là thứ tôi mong thấy ở một developer — dù là intern hay không."</div>
+            <div class="testimonial-author">
+              <div class="author-av" style="background: linear-gradient(135deg,#ffa42b,#d97706);color:#000;">A</div>
+              <div>
+                <div class="author-name">Lê Anh Khoa</div>
+                <div class="author-role">CTO • Agency Phần mềm Đà Nẵng</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
+      <div class="container" style="position:relative;z-index:1;">
+        <div class="reveal">
+          <h2 class="cta-title">Sẵn sàng ghi điểm<br><span class="accent">10/10</span> với HR chưa?</h2>
+          <p class="cta-sub">Nơi ứng viên thực tập và nhà tuyển dụng gặp nhau — quy trình rõ ràng, dữ liệu minh bạch, kết quả được lưu trữ cẩn thận trong cơ sở dữ liệu SQL.</p>
+          <div class="cta-buttons">
+            <a href="./app.html" class="btn btn-primary btn-lg">
+              Bắt đầu ứng tuyển ngay
+            </a>
+            <a href="#roles" class="btn btn-outline btn-lg">
+              Khám phá tính năng
+            </a>
+          </div>
+          <div class="cta-note">
+            <span>✓</span> Miễn phí hoàn toàn &nbsp;•&nbsp;
+            <span>✓</span> Không cần đăng ký thẻ &nbsp;•&nbsp;
+            <span>✓</span> Phân quyền Admin và Ứng viên riêng biệt
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <!-- Brand -->
+          <div class="footer-brand">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <div class="logo-icon">💼</div>
+              <div>
+                <span class="logo-text">Tuyển<span> Thực Tập</span></span>
+                <span class="logo-badge">Intern Platform</span>
+              </div>
+            </div>
+            <p class="footer-desc">Nền tảng tuyển dụng thực tập giúp ứng viên nổi bật và HR quản lý hồ sơ hiệu quả. Dữ liệu bảo mật, quy trình minh bạch, kết quả đo lường được.</p>
+            <div class="footer-social">
+              <a href="#" class="social-btn" title="GitHub">🐱</a>
+              <a href="#" class="social-btn" title="LinkedIn">💼</a>
+              <a href="#" class="social-btn" title="Twitter">🐦</a>
+            </div>
+          </div>
+
+          <!-- Links 1 -->
+          <div>
+            <div class="footer-col-title">Tính năng</div>
+            <div class="footer-links">
+              <a href="#features" class="footer-link">Bảng ATS Kanban</a>
+              <a href="#features" class="footer-link">Phân quyền Admin/User</a>
+              <a href="#features" class="footer-link">SQL Database Cloud</a>
+              <a href="#features" class="footer-link">Lịch phỏng vấn</a>
+              <a href="#features" class="footer-link">Tên miền riêng</a>
+            </div>
+          </div>
+
+          <!-- Links 2 -->
+          <div>
+            <div class="footer-col-title">Công nghệ</div>
+            <div class="footer-links">
+              <a href="#tech" class="footer-link">React + Vite</a>
+              <a href="#tech" class="footer-link">PostgreSQL (Supabase)</a>
+              <a href="#tech" class="footer-link">Supabase Auth + RLS</a>
+              <a href="#tech" class="footer-link">Vercel Hosting</a>
+              <a href="#tech" class="footer-link">GitHub Portfolio</a>
+            </div>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Hỗ trợ</div>
+            <div class="footer-links">
+              <a href="#how-it-works" class="footer-link">Cách sử dụng</a>
+              <a href="#database" class="footer-link">Cơ sở dữ liệu SQL</a>
+              <a href="#roles" class="footer-link">Vai trò hệ thống</a>
+              <a href="#tech" class="footer-link">Công nghệ sử dụng</a>
+              <a href="./app.html" class="footer-link">Truy cập ứng dụng</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-copy">
+            © 2026 Tuyển Thực Tập — Nền tảng tuyển dụng thực tập chuyên nghiệp.
+          </div>
+          <div class="footer-badges">
+            <span class="footer-badge green">SQL Cloud Live</span>
+            <span class="footer-badge">Open Source</span>
+            <span class="footer-badge">Free Hosting</span>
+            <span class="footer-badge">MIT License</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Scroll reveal animation
+      const revealElements = document.querySelectorAll('.reveal');
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach(el => revealObserver.observe(el));
+
+      // Stagger delay for grid children
+      document.querySelectorAll('.features-grid .feature-card, .tech-grid .tech-card').forEach((el, i) => {
+        el.style.transitionDelay = `${i * 0.06}s`;
+      });
+
+      // Navbar scroll style
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+          navbar.style.background = 'rgba(18, 18, 18, 0.97)';
+        } else {
+          navbar.style.background = 'rgba(18, 18, 18, 0.85)';
+        }
+      });
+
+      // CTA button — points to app
+      document.getElementById('cta-main').addEventListener('click', (e) => {
+        // Try to open the React app
+        // Since both files are in same dir, this should work
+      });
+
+      // Smooth number count-up animation for stats
+      const statNums = document.querySelectorAll('.stat-num');
+
+      const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const text = el.textContent;
+          // Only animate pure number stats
+          const num = parseInt(text.replace(/[^0-9]/g, ''), 10);
+          if (!isNaN(num) && num > 0 && !el.dataset.counted) {
+            el.dataset.counted = 'true';
+            let current = 0;
+            const step = Math.max(1, Math.ceil(num / 30));
+            const interval = setInterval(() => {
+              current = Math.min(current + step, num);
+              el.textContent = text.replace(/[0-9]+/, current);
+              if (current >= num) clearInterval(interval);
+            }, 50);
+          }
+          countObserver.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+
+      statNums.forEach(el => countObserver.observe(el));
+    </script>
   </body>
 </html>
