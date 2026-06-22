@@ -9,7 +9,7 @@
     <meta property="og:title" content="Tuyển Thực Tập — Nền tảng tuyển dụng thực tập thông minh" />
     <meta property="og:description" content="Xây dựng bởi sinh viên cho sinh viên — Hệ thống ATS chuyên nghiệp giúp bạn nổi bật với HR" />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231ed760'/><text y='.9em' font-size='70' x='15'>💼</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231ed760'/><text y='.9em' font-size='70' x='15'><i data-lucide="briefcase"></i></text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1337,14 +1337,30 @@
     
       h1, h2, h3, h4, h5, h6 { letter-spacing: -0.04em; }
     </style>
-  </head>
+  <script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  [data-lucide] {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.2em;
+    stroke-width: 2.2;
+  }
+  .logo-box [data-lucide], .logo-icon [data-lucide] {
+    width: 24px; height: 24px; color: #fff;
+  }
+  .tech-icon [data-lucide] {
+    width: 28px; height: 28px; color: #1ed760;
+  }
+  .ql-btn [data-lucide] { margin-right: 8px; color: #1ed760; }
+</style>
+</head>
   <body>
 
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar" id="navbar">
       <div class="navbar-inner">
         <a href="#" class="navbar-logo">
-          <div class="logo-icon">💼</div>
+          <div class="logo-icon"><i data-lucide="briefcase"></i></div>
           <div>
             <span class="logo-text">Tuyển<span> Thực Tập</span></span>
             <span class="logo-badge">Intern Platform</span>
@@ -1561,7 +1577,7 @@
           </div>
 
           <div class="feature-card reveal">
-            <div class="feature-icon">📅</div>
+            <div class="feature-icon"><i data-lucide="calendar"></i></div>
             <div class="feature-title">Lên lịch phỏng vấn & Đánh giá</div>
             <div class="feature-desc">HR lên lịch hẹn phỏng vấn, điền link Google Meet/Zoom. Sau phỏng vấn, chấm điểm sao và ghi nhận xét chi tiết được lưu vào CSDL.</div>
           </div>
@@ -1573,25 +1589,25 @@
           </div>
 
           <div class="feature-card reveal">
-            <div class="feature-icon">💼</div>
+            <div class="feature-icon"><i data-lucide="briefcase"></i></div>
             <div class="feature-title">Đăng tin tuyển dụng</div>
             <div class="feature-desc">HR có thể tạo mới, chỉnh sửa và đóng/mở các tin tuyển dụng. Ứng viên xem danh sách, lọc theo phòng ban/loại hình và nộp đơn trực tiếp trong app.</div>
           </div>
 
           <div class="feature-card reveal">
-            <div class="feature-icon">👤</div>
+            <div class="feature-icon"><i data-lucide="user"></i></div>
             <div class="feature-title">Hồ sơ cá nhân & Kỹ năng</div>
             <div class="feature-desc">Ứng viên điền đầy đủ thông tin, link CV, bio giới thiệu và danh sách kỹ năng. Hồ sơ được hiển thị rõ ràng cho HR khi xem danh sách ứng viên.</div>
           </div>
 
           <div class="feature-card reveal">
-            <div class="feature-icon">🌐</div>
+            <div class="feature-icon"><i data-lucide="globe"></i></div>
             <div class="feature-title">Truy cập mọi nơi, mọi thiết bị</div>
             <div class="feature-desc">Ứng dụng chạy hoàn toàn trên trình duyệt — không cần cài đặt. Responsive đầy đủ trên desktop, tablet và mobile. Có tên miền riêng và HTTPS bảo mật.</div>
           </div>
 
           <div class="feature-card reveal">
-            <div class="feature-icon">📊</div>
+            <div class="feature-icon"><i data-lucide="bar-chart-2"></i></div>
             <div class="feature-title">Thống kê & Báo cáo trực quan</div>
             <div class="feature-desc">Dashboard HR hiển thị tổng số hồ sơ, tỉ lệ chuyển đổi qua từng giai đoạn tuyển dụng, số lịch phỏng vấn sắp diễn ra — tất cả cập nhật theo thời gian thực từ SQL.</div>
           </div>
@@ -1649,7 +1665,7 @@
           <!-- Candidate -->
           <div class="role-card candidate reveal">
             <div class="card-glow"></div>
-            <div class="role-badge badge-green">👤 Ứng viên thực tập</div>
+            <div class="role-badge badge-green"><i data-lucide="user"></i> Ứng viên thực tập</div>
             <div class="role-title">Candidate Dashboard</div>
             <div class="role-desc">Theo dõi toàn bộ tiến trình hồ sơ của bạn từ lúc nộp đơn đến khi nhận kết quả — tất cả ở một nơi.</div>
             <ul class="role-features">
@@ -1666,7 +1682,7 @@
           <!-- Recruiter -->
           <div class="role-card recruiter reveal delay-2">
             <div class="card-glow"></div>
-            <div class="role-badge badge-blue">🏢 HR / Nhà tuyển dụng</div>
+            <div class="role-badge badge-blue"><i data-lucide="building"></i> HR / Nhà tuyển dụng</div>
             <div class="role-title">Recruiter Dashboard</div>
             <div class="role-desc">Toàn bộ quy trình tuyển dụng trong tầm tay — từ đăng tin đến offer — không cần phần mềm tốn tiền.</div>
             <ul class="role-features">
@@ -1811,7 +1827,7 @@
 
           <div class="tech-card reveal delay-2">
             <div class="tech-card-header">
-              <div class="tech-icon">🐱</div>
+              <div class="tech-icon"><i data-lucide="github"></i></div>
               <div>
                 <div class="tech-name">GitHub Portfolio</div>
                 <div class="tech-tag">Version Control</div>
@@ -1822,7 +1838,7 @@
 
           <div class="tech-card reveal delay-3">
             <div class="tech-card-header">
-              <div class="tech-icon">🎨</div>
+              <div class="tech-icon"><i data-lucide="palette"></i></div>
               <div>
                 <div class="tech-name">Vanilla CSS Premium</div>
                 <div class="tech-tag">Styling</div>
@@ -1866,7 +1882,7 @@
           <!-- Brand -->
           <div class="footer-brand">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-              <div class="logo-icon">💼</div>
+              <div class="logo-icon"><i data-lucide="briefcase"></i></div>
               <div>
                 <span class="logo-text">Tuyển<span> Thực Tập</span></span>
                 <span class="logo-badge">Intern Platform</span>
@@ -1874,9 +1890,9 @@
             </div>
             <p class="footer-desc">Nền tảng tuyển dụng thực tập giúp ứng viên nổi bật và HR quản lý hồ sơ hiệu quả. Dữ liệu bảo mật, quy trình minh bạch, kết quả đo lường được.</p>
             <div class="footer-social">
-              <a href="#" class="social-btn" title="GitHub">🐱</a>
-              <a href="#" class="social-btn" title="LinkedIn">💼</a>
-              <a href="#" class="social-btn" title="Twitter">🐦</a>
+              <a href="#" class="social-btn" title="GitHub"><i data-lucide="github"></i></a>
+              <a href="#" class="social-btn" title="LinkedIn"><i data-lucide="briefcase"></i></a>
+              <a href="#" class="social-btn" title="Twitter"><i data-lucide="twitter"></i></a>
             </div>
           </div>
 
@@ -1995,5 +2011,19 @@
 
       statNums.forEach(el => countObserver.observe(el));
     </script>
-  </body>
+  <script>
+  lucide.createIcons();
+  const observer = new MutationObserver((mutations) => {
+    let shouldUpdate = false;
+    for(let m of mutations) {
+      if(m.addedNodes.length > 0) {
+        shouldUpdate = true;
+        break;
+      }
+    }
+    if(shouldUpdate) lucide.createIcons();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+</body>
 </html>
