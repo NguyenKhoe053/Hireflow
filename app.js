@@ -82,7 +82,7 @@ function renderAuth() {
           <label class="fl">Mật khẩu</label>
           <input id="l-pass" type="password" class="fi" required placeholder="••••••••">
         </div>
-        <div id="cf-turnstile-widget" style="margin-bottom: 12px; display: flex; justify-content: center;"></div>
+        <div style="height: 65px; overflow: hidden; margin-bottom: 12px; display: flex; justify-content: center;"><div id="cf-turnstile-widget"></div></div>
         <button type="submit" class="btn btn-green" style="width:100%;margin-top:4px">Đăng nhập</button>
       </form>
       <div class="auth-switch">Chưa có tài khoản? <button onclick="authMode='register';renderAuth()">Đăng ký ngay</button></div>
@@ -120,7 +120,7 @@ function renderAuth() {
           <label class="fl">Mật khẩu</label>
           <input id="r-pass" type="password" class="fi" required placeholder="Tối thiểu 6 ký tự" minlength="6">
         </div>
-        <div id="cf-turnstile-widget" style="margin-bottom: 12px; display: flex; justify-content: center;"></div>
+        <div style="height: 65px; overflow: hidden; margin-bottom: 12px; display: flex; justify-content: center;"><div id="cf-turnstile-widget"></div></div>
         <button type="submit" class="btn btn-green" style="width:100%;margin-top:4px">Tạo tài khoản</button>
       </form>
       <div class="auth-switch">Đã có tài khoản? <button onclick="authMode='login';renderAuth()">Đăng nhập</button></div>`;
