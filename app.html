@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tuyển Thực Tập — Ứng dụng Tuyển dụng Thực tập</title>
+  <meta name="description" content="Hệ thống quản lý tuyển dụng thực tập chuyên nghiệp — ATS Kanban, phân quyền Admin/User, SQL Cloud Database." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231ed760'/><text y='.9em' font-size='70' x='15'>💼</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #121212;
+      --surface: #181818;
+      --mid:     #1f1f1f;
+      --card:    #252525;
+      --green:   #1ed760;
+      --green-d: #169c46;
+      --text:    #ffffff;
+      --muted:   #b3b3b3;
+      --near:    #cbcbcb;
+      --red:     #f3727f;
+      --orange:  #ffa42b;
+      --blue:    #539df5;
+      --border:  rgba(255,255,255,0.08);
+      --shadow:  rgba(0,0,0,0.5) 0px 8px 24px;
+      --r: 8px; --r-sm: 4px; --r-full: 9999px;
+      --font: 'Inter', sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:6px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--card);border-radius:var(--r-full)}
+    a{text-decoration:none;color:inherit}
+    input,textarea,select,button{font-family:inherit}
+
+    /* ---- LAYOUT ---- */
+    #app{display:flex;flex-direction:column;min-height:100vh}
+    .page{flex:1;padding:32px 24px;max-width:1280px;margin:0 auto;width:100%;animation:fadeUp .3s ease}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ---- NAVBAR ---- */
+    .navbar{
+      position:sticky;top:0;z-index:100;
+      background:rgba(18,18,18,.92);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      height:64px;padding:0 24px;max-width:1280px;margin:0 auto;
+    }
+    .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+    .logo-box{
+      width:36px;height:36px;background:var(--green);border-radius:var(--r-sm);
+      display:flex;align-items:center;justify-content:center;font-size:17px;
+      box-shadow:0 0 12px rgba(30,215,96,.35)
+    }
+    .logo-name{font-size:19px;font-weight:800;letter-spacing:-.5px}
+    .logo-name span{color:var(--green)}
+    .logo-role{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-top:-3px}
+    .nav-tabs{display:flex;gap:4px}
+    .nav-tab{
+      font-size:13px;font-weight:500;color:var(--muted);
+      padding:7px 14px;border-radius:var(--r-full);border:none;
+      background:transparent;cursor:pointer;transition:.12s;white-space:nowrap;
+      display:flex;align-items:center;gap:6px;
+    }
+    .nav-tab:hover{color:var(--text);background:rgba(255,255,255,.06)}
+    .nav-tab.active{color:var(--green);background:rgba(30,215,96,.1);font-weight:700}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-user{font-size:13px;color:var(--muted);text-align:right}
+    .nav-user strong{display:block;color:var(--text);font-size:14px}
+    .nav-user em{font-style:normal;font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--green)}
+    .nav-db{
+      font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+      padding:4px 10px;border-radius:var(--r-full);
+      border:1px solid rgba(30,215,96,.2);background:rgba(30,215,96,.06);color:var(--green);
+      display:flex;align-items:center;gap:5px;
+    }
+    .db-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* ---- BUTTONS ---- */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      font-size:13px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+      border:none;cursor:pointer;border-radius:var(--r-full);transition:.12s;
+      padding:11px 24px;white-space:nowrap;
+    }
+    .btn-green{background:var(--green);color:#000;box-shadow:0 0 16px rgba(30,215,96,.25)}
+    .btn-green:hover{background:#1fdf64;transform:scale(1.02);box-shadow:0 0 24px rgba(30,215,96,.4)}
+    .btn-dark{background:var(--mid);color:var(--text);border:1px solid var(--border)}
+    .btn-dark:hover{background:var(--card);border-color:rgba(255,255,255,.15)}
+    .btn-outline{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.25)}
+    .btn-outline:hover{border-color:var(--text)}
+    .btn-red{background:rgba(243,114,127,.1);color:var(--red);border:1px solid rgba(243,114,127,.2)}
+    .btn-red:hover{background:var(--red);color:#fff}
+    .btn-sm{padding:7px 16px;font-size:11px;letter-spacing:1px}
+    .btn-xs{padding:4px 10px;font-size:10px;letter-spacing:.8px}
+    .btn:disabled{opacity:.5;cursor:default;transform:none!important}
+
+    /* ---- CARDS ---- */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:.2s}
+    .card:hover{border-color:rgba(255,255,255,.14)}
+    .card-sm{padding:16px}
+
+    /* ---- FORM ---- */
+    .form-group{margin-bottom:16px}
+    label.fl{display:block;font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .fi{
+      width:100%;padding:10px 14px;font-size:14px;
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
+      border-radius:var(--r-sm);color:var(--text);transition:.12s;
+    }
+    .fi:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(30,215,96,.12)}
+    textarea.fi{min-height:88px;resize:vertical}
+    select.fi option{background:var(--surface)}
+
+    /* ---- STATUS BADGES ---- */
+    .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:var(--r-full);font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:capitalize}
+    .b-applied{background:rgba(83,157,245,.12);color:var(--blue)}
+    .b-screening{background:rgba(255,164,43,.12);color:var(--orange)}
+    .b-interviewing{background:rgba(30,215,96,.12);color:var(--green)}
+    .b-offered{background:rgba(30,215,96,.15);color:#1ed760;border:1px solid rgba(30,215,96,.2)}
+    .b-rejected{background:rgba(243,114,127,.12);color:var(--red)}
+    .b-candidate{background:rgba(30,215,96,.1);color:var(--green);border:1px solid rgba(30,215,96,.15)}
+    .b-recruiter{background:rgba(83,157,245,.1);color:var(--blue);border:1px solid rgba(83,157,245,.15)}
+
+    /* ---- TOAST ---- */
+    #toast{
+      position:fixed;bottom:24px;right:24px;z-index:9999;
+      padding:12px 20px;border-radius:var(--r);font-size:14px;font-weight:500;
+      box-shadow:var(--shadow);display:none;align-items:center;gap:8px;
+      animation:slideIn .25s ease;
+    }
+    #toast.show{display:flex}
+    #toast.ok{background:rgba(30,215,96,.12);color:var(--green);border:1px solid rgba(30,215,96,.2)}
+    #toast.err{background:rgba(243,114,127,.12);color:var(--red);border:1px solid rgba(243,114,127,.2)}
+    @keyframes slideIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+    /* ---- MODAL ---- */
+    .modal-bg{
+      position:fixed;inset:0;z-index:500;
+      background:rgba(0,0,0,.65);backdrop-filter:blur(6px);
+      display:flex;align-items:center;justify-content:center;padding:16px;
+    }
+    .modal{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--r);padding:32px;width:100%;max-width:480px;
+      max-height:90vh;overflow-y:auto;box-shadow:var(--shadow);
+    }
+    .modal-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+    .modal-title{font-size:20px;font-weight:700}
+    .modal-sub{font-size:12px;color:var(--muted);margin-top:3px}
+    .close-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;padding:2px}
+    .close-btn:hover{color:var(--text)}
+
+    /* ---- AUTH ---- */
+    #auth-page{
+      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+      background:radial-gradient(ellipse 70% 60% at 30% 40%, rgba(30,215,96,.06) 0%, transparent 60%),
+                 radial-gradient(ellipse 50% 70% at 80% 70%, rgba(83,157,245,.04) 0%, transparent 60%),
+                 var(--bg);
+    }
+    .auth-box{width:100%;max-width:420px}
+    .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px;box-shadow:var(--shadow)}
+    .auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+    .auth-title{font-size:22px;font-weight:700;margin-bottom:4px}
+    .auth-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+    .role-pick{display:flex;gap:10px;margin-bottom:16px}
+    .role-opt{
+      flex:1;padding:10px;border-radius:var(--r-sm);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);
+      transition:.12s;background:transparent;
+    }
+    .role-opt.selected-candidate{border-color:var(--green);background:rgba(30,215,96,.08);color:var(--green)}
+    .role-opt.selected-recruiter{border-color:var(--blue);background:rgba(83,157,245,.08);color:var(--blue)}
+    .auth-switch{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
+    .auth-switch button{background:none;border:none;color:var(--green);cursor:pointer;font-size:13px;font-weight:600}
+    .quick-logins{margin-top:20px;border-top:1px solid var(--border);padding-top:16px}
+    .ql-label{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:10px}
+    .ql-btn{
+      width:100%;margin-bottom:6px;padding:9px 14px;
+      background:var(--mid);border:1px solid var(--border);border-radius:var(--r-sm);
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:13px;color:var(--text);cursor:pointer;transition:.12s;
+    }
+    .ql-btn:hover{border-color:rgba(255,255,255,.18);background:var(--card)}
+    .ql-btn em{font-style:normal;font-size:11px;color:var(--muted)}
+
+    /* ---- JOBS GRID ---- */
+    .jobs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .job-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:.2s;cursor:pointer}
+    .job-card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-2px);box-shadow:rgba(0,0,0,.3) 0px 8px 16px}
+    .job-dept{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+    .job-title{font-size:17px;font-weight:700;margin-bottom:10px}
+    .job-meta{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .job-meta-row{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+    .job-type-badge{
+      display:inline-block;font-size:10px;font-weight:700;letter-spacing:.8px;
+      padding:3px 9px;border-radius:var(--r-full);
+      background:rgba(30,215,96,.1);color:var(--green);border:1px solid rgba(30,215,96,.15);
+    }
+    .job-desc{font-size:13px;color:var(--muted);line-height:1.55;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:16px}
+    .search-bar{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .search-bar .fi{flex:1;min-width:200px}
+
+    /* ---- CANDIDATE DASHBOARD ---- */
+    .status-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center}
+    .stat-num{font-size:32px;font-weight:900;line-height:1;margin-bottom:6px}
+    .stat-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+    .app-list{display:flex;flex-direction:column;gap:14px}
+    .app-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    .app-item-info h4{font-size:16px;font-weight:700;margin-bottom:3px}
+    .app-item-info p{font-size:12px;color:var(--muted)}
+
+    /* ---- ATS BOARD ---- */
+    .ats-board{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;min-width:900px;overflow-x:auto}
+    .ats-wrap{overflow-x:auto;padding-bottom:8px}
+    .ats-col{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--r);padding:12px;min-height:480px}
+    .ats-col-hd{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding-bottom:8px;margin-bottom:12px;border-bottom:2px solid;display:flex;justify-content:space-between;align-items:center}
+    .ats-col-hd .cnt{background:var(--mid);padding:1px 7px;border-radius:var(--r-full);font-size:10px;color:var(--muted)}
+    .col-applied .ats-col-hd{color:var(--blue);border-color:var(--blue)}
+    .col-screening .ats-col-hd{color:var(--orange);border-color:var(--orange)}
+    .col-interviewing .ats-col-hd{color:var(--green);border-color:var(--green)}
+    .col-offered .ats-col-hd{color:#1ed760;border-color:rgba(30,215,96,.4)}
+    .col-rejected .ats-col-hd{color:var(--red);border-color:var(--red)}
+    .cand-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px;margin-bottom:8px;transition:.15s}
+    .cand-card:hover{border-color:rgba(255,255,255,.18)}
+    .cc-name{font-size:13px;font-weight:700;margin-bottom:2px}
+    .cc-role{font-size:11px;color:var(--muted);margin-bottom:7px}
+    .cc-skills{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+    .skill-tag{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)}
+    .cc-actions{display:flex;flex-direction:column;gap:5px}
+    .cc-date{font-size:10px;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px solid var(--border)}
+    .cc-stars{color:var(--orange);font-size:11px}
+
+    /* ---- INTERVIEWS TABLE ---- */
+    .iv-table{width:100%;border-collapse:collapse;font-size:13px}
+    .iv-table th{padding:12px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+    .iv-table td{padding:14px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .iv-table tr:hover td{background:rgba(255,255,255,.02)}
+
+    /* ---- PROFILE ---- */
+    .profile-wrap{max-width:600px}
+    .skills-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .skill-chip{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(30,215,96,.08);border:1px solid rgba(30,215,96,.15);
+      color:var(--green);padding:4px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;
+    }
+    .skill-chip button{background:none;border:none;color:rgba(30,215,96,.6);cursor:pointer;font-size:13px;line-height:1}
+    .skill-chip button:hover{color:var(--red)}
+
+    /* ---- SECTION HEADER ---- */
+    .sec-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+    .sec-title{font-size:24px;font-weight:800;letter-spacing:-.5px}
+    .sec-sub{font-size:13px;color:var(--muted);margin-top:4px}
+    .divider{height:1px;background:var(--border);margin:24px 0}
+
+    /* ---- GRID HELPERS ---- */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+    /* ---- EMPTY STATE ---- */
+    .empty{text-align:center;padding:56px 24px;color:var(--muted)}
+    .empty-icon{font-size:40px;margin-bottom:12px}
+    .empty h3{font-size:16px;font-weight:700;color:var(--near);margin-bottom:8px}
+    .empty p{font-size:13px;line-height:1.6}
+
+    /* ---- STARS ---- */
+    .star-row{display:flex;gap:8px;margin:8px 0}
+    .star-btn{background:var(--mid);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;font-size:16px;transition:.12s}
+    .star-btn.active,.star-btn:hover{border-color:var(--orange);background:rgba(255,164,43,.1)}
+
+    @media(max-width:900px){
+      .jobs-grid,.g3{grid-template-columns:1fr 1fr}
+      .status-cards{grid-template-columns:1fr 1fr}
+      .nav-tabs{display:none}
+    }
+    @media(max-width:600px){
+      .jobs-grid,.g2,.g3,.status-cards{grid-template-columns:1fr}
+      .nav-tabs{display:none}
+      .page{padding:20px 14px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- AUTH PAGE -->
+<div id="auth-page">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="logo-box">💼</div>
+      <div>
+        <div class="logo-name">Tuyển<span> Thực Tập</span></div>
+        <span class="logo-role">Intern Platform</span>
+      </div>
+    </div>
+    <div class="auth-card">
+      <div id="auth-form-wrap">
+        <!-- injected by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP (hidden until login) -->
+<div id="app" style="display:none">
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo" onclick="goHome()">
+        <div class="logo-box">💼</div>
+        <div>
+          <div class="logo-name">Tuyển<span> Thực Tập</span></div>
+          <span class="logo-role" id="nav-role-label">—</span>
+        </div>
+      </div>
+      <div class="nav-tabs" id="nav-tabs"></div>
+      <div class="nav-right">
+        <div class="nav-user" id="nav-user-info"></div>
+        <div class="nav-db"><span class="db-dot"></span>SQL Local</div>
+        <button class="btn btn-dark btn-sm" onclick="logout()">Đăng xuất</button>
+      </div>
+    </div>
+  </nav>
+  <div class="page" id="main-content"></div>
+</div>
+
+<!-- MODAL CONTAINER -->
+<div id="modal-root" style="display:none"></div>
+
+<script>
+// =====================================================================
+// DATA LAYER — LocalStorage SQL simulation
+// =====================================================================
+const DB = {
+  get: (k) => JSON.parse(localStorage.getItem('hf_'+k) || '[]'),
+  set: (k, v) => localStorage.setItem('hf_'+k, JSON.stringify(v)),
+  session: () => JSON.parse(localStorage.getItem('hf_session') || 'null'),
+  setSession: (u) => localStorage.setItem('hf_session', JSON.stringify(u)),
+  clearSession: () => localStorage.removeItem('hf_session'),
+};
+
+// Seed data
+function seedData() {
+  if (!localStorage.getItem('hf_seeded')) {
+    DB.set('profiles', [
+      {id:'usr-1',email:'ungvien@tuyenthuctap.vn',full_name:'Nguyễn Văn An',role:'candidate',skills:['React','CSS','JavaScript'],bio:'Sinh viên CNTT năm 4, đam mê Frontend.',resume_url:'https://drive.google.com/'},
+      {id:'usr-2',email:'hr@tuyenthuctap.vn',full_name:'Trần Thị Hương',role:'recruiter',skills:[],bio:'',resume_url:''},
+    ]);
+    DB.set('jobs', [
+      {id:'job-1',title:'Frontend Developer Intern',department:'Engineering',location:'Hà Nội (Hybrid)',type:'Internship',salary_range:'5,000,000 – 8,000,000 VND',description:'Xây dựng giao diện web với React và CSS hiện đại. Làm việc cùng team sản phẩm và designer.',requirements:'Biết HTML/CSS/JavaScript. Tìm hiểu về React. Chăm chỉ, học hỏi nhanh.',status:'active',created_at:new Date().toISOString()},
+      {id:'job-2',title:'Backend Engineer (Node.js/SQL)',department:'Engineering',location:'TP.HCM (Remote)',type:'Full-time',salary_range:'15,000,000 – 25,000,000 VND',description:'Thiết kế schema SQL, xây dựng REST API, tối ưu truy vấn database cho hệ thống lớn.',requirements:'Thành thạo JavaScript/TypeScript và SQL. Kinh nghiệm Node.js 1+ năm.',status:'active',created_at:new Date(Date.now()-86400000).toISOString()},
+      {id:'job-3',title:'UI/UX Designer Intern',department:'Product & Design',location:'Hà Nội (On-site)',type:'Internship',salary_range:'4,000,000 – 6,000,000 VND',description:'Tạo wireframe, mockup và prototype cho sản phẩm. Phối hợp cùng dev team hiện thực hóa thiết kế.',requirements:'Thành thạo Figma. Portfolio thể hiện tư duy thiết kế rõ ràng.',status:'active',created_at:new Date(Date.now()-172800000).toISOString()},
+    ]);
+    DB.set('applications', []);
+    DB.set('interviews', []);
+    localStorage.setItem('hf_seeded','1');
+  }
+}
+
+// =====================================================================
+// TOAST & MODAL
+// =====================================================================
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = (type==='ok'?'✓ ':'⚠ ') + msg;
+  t.className = 'show ' + type;
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>{ t.classList.remove('show'); t.className=''; }, 3800);
+}
+
+function openModal(html) {
+  const r = document.getElementById('modal-root');
+  r.style.display = 'flex';
+  r.innerHTML = `<div class="modal-bg" onclick="if(event.target===this)closeModal()">${html}</div>`;
+}
+
+function closeModal() {
+  const r = document.getElementById('modal-root');
+  r.style.display = 'none';
+  r.innerHTML = '';
+}
+
+// =====================================================================
+// AUTH
+// =====================================================================
+let authMode = 'login'; // 'login' | 'register'
+
+function renderAuth() {
+  const f = document.getElementById('auth-form-wrap');
+  if (authMode === 'login') {
+    f.innerHTML = `
+      <div class="auth-title">Đăng nhập</div>
+      <div class="auth-sub" style="margin-bottom:20px">Chào mừng quay trở lại Tuyển Thực Tập</div>
+      <form onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label class="fl">Email</label>
+          <input id="l-email" type="email" class="fi" required placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="fl">Mật khẩu</label>
+          <input id="l-pass" type="password" class="fi" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-green" style="width:100%;margin-top:4px">Đăng nhập</button>
+      </form>
+      <div class="auth-switch">Chưa có tài khoản? <button onclick="authMode='register';renderAuth()">Đăng ký ngay</button></div>
+      <div class="quick-logins">
+        <div class="ql-label">Đăng nhập nhanh thử nghiệm</div>
+        <button class="ql-btn" onclick="quickLogin('ungvien@tuyenthuctap.vn')">
+          <span>👤 Tài khoản Ứng viên</span><em>Nguyễn Văn An</em>
+        </button>
+        <button class="ql-btn" onclick="quickLogin('hr@tuyenthuctap.vn')">
+          <span>🏢 Tài khoản HR Manager</span><em>Trần Thị Hương</em>
+        </button>
+      </div>`;
+  } else {
+    f.innerHTML = `
+      <div class="auth-title">Tạo tài khoản</div>
+      <div class="auth-sub" style="margin-bottom:20px">Tham gia Tuyển Thực Tập ngay hôm nay</div>
+      <form onsubmit="doRegister(event)">
+        <div class="form-group">
+          <label class="fl">Họ và Tên</label>
+          <input id="r-name" type="text" class="fi" required placeholder="Nguyễn Văn A">
+        </div>
+        <div class="form-group">
+          <label class="fl">Tôi là</label>
+          <div class="role-pick">
+            <div class="role-opt selected-candidate" id="ropt-c" onclick="pickRole('candidate')">👤 Ứng viên</div>
+            <div class="role-opt" id="ropt-r" onclick="pickRole('recruiter')">🏢 Nhà tuyển dụng</div>
+          </div>
+          <input type="hidden" id="r-role" value="candidate">
+        </div>
+        <div class="form-group">
+          <label class="fl">Email</label>
+          <input id="r-email" type="email" class="fi" required placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="fl">Mật khẩu</label>
+          <input id="r-pass" type="password" class="fi" required placeholder="Tối thiểu 6 ký tự" minlength="6">
+        </div>
+        <button type="submit" class="btn btn-green" style="width:100%;margin-top:4px">Tạo tài khoản</button>
+      </form>
+      <div class="auth-switch">Đã có tài khoản? <button onclick="authMode='login';renderAuth()">Đăng nhập</button></div>`;
+  }
+}
+
+function pickRole(r) {
+  document.getElementById('r-role').value = r;
+  document.getElementById('ropt-c').className = 'role-opt' + (r==='candidate'?' selected-candidate':'');
+  document.getElementById('ropt-r').className = 'role-opt' + (r==='recruiter'?' selected-recruiter':'');
+}
+
+function doLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const profiles = DB.get('profiles');
+  const user = profiles.find(p => p.email.toLowerCase() === email);
+  if (!user) { toast('Email không tồn tại!', 'err'); return; }
+  DB.setSession(user);
+  toast('Đăng nhập thành công!');
+  startApp(user);
+}
+
+function doRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim().toLowerCase();
+  const role = document.getElementById('r-role').value;
+  const profiles = DB.get('profiles');
+  if (profiles.some(p => p.email.toLowerCase() === email)) {
+    toast('Email này đã được đăng ký!', 'err'); return;
+  }
+  const newUser = {id:'usr-'+Math.random().toString(36).substr(2,8), email, full_name:name, role, skills:[], bio:'', resume_url:''};
+  profiles.push(newUser);
+  DB.set('profiles', profiles);
+  DB.setSession(newUser);
+  toast('Tài khoản đã được tạo thành công!');
+  authMode = 'login';
+  startApp(newUser);
+}
+
+function quickLogin(email) {
+  const profiles = DB.get('profiles');
+  const user = profiles.find(p => p.email === email);
+  if (user) { DB.setSession(user); startApp(user); }
+}
+
+function logout() {
+  DB.clearSession();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-page').style.display = 'flex';
+  authMode = 'login';
+  renderAuth();
+  toast('Đã đăng xuất');
+}
+
+// =====================================================================
+// APP SHELL
+// =====================================================================
+let currentUser = null;
+let currentTab = '';
+
+function startApp(user) {
+  currentUser = user;
+  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('nav-role-label').textContent = user.role === 'recruiter' ? 'HR Manager' : 'Ứng viên';
+  document.getElementById('nav-user-info').innerHTML = `<strong>${user.full_name||user.email}</strong><em>${user.role==='recruiter'?'Nhà tuyển dụng':'Ứng viên thực tập'}</em>`;
+  renderNav();
+  const defaultTab = user.role === 'recruiter' ? 'ats' : 'jobs';
+  switchTab(defaultTab);
+}
+
+function goHome() {
+  switchTab(currentUser?.role === 'recruiter' ? 'ats' : 'jobs');
+}
+
+function renderNav() {
+  const tabs = currentUser.role === 'recruiter'
+    ? [{id:'ats',label:'🗂 Bảng ATS'},{id:'jobs',label:'💼 Đăng tuyển'},{id:'interviews',label:'📅 Phỏng vấn'},{id:'profile',label:'👤 Tài khoản'}]
+    : [{id:'jobs',label:'💼 Việc làm'},{id:'dashboard',label:'📄 Đơn ứng tuyển'},{id:'interviews',label:'📅 Lịch hẹn'},{id:'profile',label:'👤 Tài khoản'}];
+  document.getElementById('nav-tabs').innerHTML = tabs.map(t =>
+    `<button class="nav-tab${currentTab===t.id?' active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`
+  ).join('');
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  renderNav();
+  const c = document.getElementById('main-content');
+  const pages = {
+    jobs: renderJobs, dashboard: renderDashboard,
+    ats: renderATS, interviews: renderInterviews, profile: renderProfile
+  };
+  if (pages[tab]) pages[tab](c);
+}
+
+// =====================================================================
+// JOBS PAGE
+// =====================================================================
+function renderJobs(c) {
+  const jobs = DB.get('jobs').filter(j => j.status === 'active');
+  c.innerHTML = `
+    <div class="sec-hd">
+      <div>
+        <div class="sec-title">Vị trí đang tuyển dụng</div>
+        <div class="sec-sub">Tìm kiếm và ứng tuyển vào các vị trí phù hợp</div>
+      </div>
+      ${currentUser.role==='recruiter'?`<button class="btn btn-green btn-sm" onclick="openCreateJob()">+ Đăng công việc</button>`:''}
+    </div>
+    <div class="search-bar">
+      <input class="fi" id="job-search" placeholder="🔍  Tìm kiếm chức danh, kỹ năng..." oninput="filterJobs()" style="flex:2">
+      <select class="fi" id="job-type" onchange="filterJobs()" style="max-width:180px">
+        <option value="">Loại hình: Tất cả</option>
+        <option value="Internship">Thực tập</option>
+        <option value="Full-time">Toàn thời gian</option>
+        <option value="Part-time">Bán thời gian</option>
+        <option value="Remote">Remote</option>
+      </select>
+    </div>
+    <div class="jobs-grid" id="jobs-list">
+      ${jobs.map(job => jobCard(job)).join('')}
+    </div>`;
+}
+
+function jobCard(job) {
+  const apps = DB.get('applications');
+  const applied = apps.some(a => a.job_id===job.id && a.candidate_id===currentUser.id);
+  return `<div class="job-card" onclick="openJobDetail('${job.id}')">
+    <div class="job-dept">${job.department}</div>
+    <div class="job-title">${job.title}</div>
+    <div class="job-meta">
+      <div class="job-meta-row">📍 ${job.location}</div>
+      <div class="job-meta-row">💰 ${job.salary_range||'Thỏa thuận'}</div>
+    </div>
+    <span class="job-type-badge">${job.type}</span>
+    <p class="job-desc" style="margin-top:10px">${job.description}</p>
+    ${currentUser.role==='candidate'
+      ? (applied ? `<button class="btn btn-dark btn-sm" style="width:100%;color:#1ed760" disabled>✓ Đã ứng tuyển</button>`
+                 : `<button class="btn btn-green btn-sm" style="width:100%" onclick="event.stopPropagation();openApply('${job.id}')">Ứng tuyển ngay</button>`)
+      : `<button class="btn btn-dark btn-sm" style="width:100%">Xem chi tiết →</button>`}
+  </div>`;
+}
+
+function filterJobs() {
+  const q = document.getElementById('job-search').value.toLowerCase();
+  const type = document.getElementById('job-type').value;
+  const jobs = DB.get('jobs').filter(j => {
+    const matchQ = !q || j.title.toLowerCase().includes(q) || j.description.toLowerCase().includes(q);
+    const matchT = !type || j.type === type;
+    return j.status==='active' && matchQ && matchT;
+  });
+  document.getElementById('jobs-list').innerHTML = jobs.length
+    ? jobs.map(job => jobCard(job)).join('')
+    : `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted)">Không tìm thấy vị trí phù hợp.</div>`;
+}
+
+function openJobDetail(jobId) {
+  const job = DB.get('jobs').find(j => j.id === jobId);
+  if (!job) return;
+  const apps = DB.get('applications');
+  const applied = apps.some(a => a.job_id===jobId && a.candidate_id===currentUser.id);
+  openModal(`<div class="modal">
+    <div class="modal-hd">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:4px">${job.department}</div>
+        <div class="modal-title">${job.title}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">📍 ${job.location} &nbsp;•&nbsp; 💰 ${job.salary_range||'Thỏa thuận'} &nbsp;•&nbsp; ${job.type}</div>
+      </div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:700;color:var(--near);margin-bottom:6px">Mô tả công việc</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">${job.description}</p>
+    </div>
+    <div style="margin-bottom:24px">
+      <div style="font-size:13px;font-weight:700;color:var(--near);margin-bottom:6px">Yêu cầu ứng viên</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.65">${job.requirements}</p>
+    </div>
+    ${currentUser.role==='candidate'
+      ? (applied
+          ? `<button class="btn btn-dark" style="width:100%;color:var(--green)" disabled>✓ Bạn đã ứng tuyển vị trí này</button>`
+          : `<button class="btn btn-green" style="width:100%" onclick="closeModal();openApply('${job.id}')">Ứng tuyển ngay →</button>`)
+      : `<button class="btn btn-dark" style="width:100%" onclick="closeModal()">Đóng</button>`}
+  </div>`);
+}
+
+function openApply(jobId) {
+  const job = DB.get('jobs').find(j => j.id === jobId);
+  openModal(`<div class="modal">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">Nộp đơn ứng tuyển</div>
+        <div class="modal-sub">Vị trí: ${job?.title}</div>
+      </div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="fl">Link CV cá nhân (Google Drive / PDF)</label>
+      <input id="ap-cv" type="url" class="fi" value="${currentUser.resume_url||''}" placeholder="https://drive.google.com/...">
+    </div>
+    <div class="form-group">
+      <label class="fl">Thư giới thiệu (Cover Letter)</label>
+      <textarea id="ap-cl" class="fi" placeholder="Chia sẻ lý do bạn phù hợp với vị trí này..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-dark btn-sm" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-green btn-sm" onclick="submitApply('${jobId}')">Xác nhận nộp đơn</button>
+    </div>
+  </div>`);
+}
+
+function submitApply(jobId) {
+  const cv = document.getElementById('ap-cv').value.trim();
+  const cl = document.getElementById('ap-cl').value.trim();
+  if (!cl) { toast('Vui lòng điền thư giới thiệu!', 'err'); return; }
+  const apps = DB.get('applications');
+  if (apps.some(a => a.job_id===jobId && a.candidate_id===currentUser.id)) {
+    toast('Bạn đã ứng tuyển vị trí này rồi!', 'err'); closeModal(); return;
+  }
+  apps.unshift({id:'app-'+Math.random().toString(36).substr(2,8), job_id:jobId, candidate_id:currentUser.id, status:'applied', resume_url:cv, cover_letter:cl, applied_at:new Date().toISOString()});
+  DB.set('applications', apps);
+  const job = DB.get('jobs').find(j=>j.id===jobId);
+  toast(`Đã nộp đơn ứng tuyển thành công cho vị trí ${job?.title}!`);
+  closeModal();
+  switchTab('jobs');
+}
+
+// =====================================================================
+// CANDIDATE DASHBOARD
+// =====================================================================
+function renderDashboard(c) {
+  const apps = DB.get('applications').filter(a => a.candidate_id === currentUser.id);
+  const jobs = DB.get('jobs');
+  const ivs = DB.get('interviews');
+  const statuses = ['applied','screening','interviewing','offered'];
+  const enriched = apps.map(a => ({...a, job: jobs.find(j=>j.id===a.job_id)})).sort((a,b)=>new Date(b.applied_at)-new Date(a.applied_at));
+  c.innerHTML = `
+    <div class="sec-hd">
+      <div><div class="sec-title">Đơn ứng tuyển của bạn</div><div class="sec-sub">Theo dõi tiến trình hồ sơ đến từng nhà tuyển dụng</div></div>
+      <button class="btn btn-green btn-sm" onclick="switchTab('jobs')">+ Tìm việc mới</button>
+    </div>
+    <div class="status-cards">
+      ${['applied','screening','interviewing','offered'].map(s => {
+        const n = apps.filter(a=>a.status===s).length;
+        const labels = {applied:'Đã nộp',screening:'Sàng lọc',interviewing:'Phỏng vấn',offered:'Nhận Offer'};
+        const colors = {applied:getComputedStyle(document.documentElement).getPropertyValue('--blue'),screening:'var(--orange)',interviewing:'var(--green)',offered:'var(--green)'};
+        return `<div class="stat-card"><div class="stat-num" style="color:${colors[s]}">${n}</div><div class="stat-lbl">${labels[s]}</div></div>`;
+      }).join('')}
+    </div>
+    ${enriched.length===0 ? `<div class="empty"><div class="empty-icon">📂</div><h3>Chưa có đơn ứng tuyển nào</h3><p>Bắt đầu tìm kiếm việc làm phù hợp với kỹ năng của bạn.</p><br><button class="btn btn-green btn-sm" onclick="switchTab('jobs')">Xem việc làm →</button></div>` :
+    `<div class="app-list">${enriched.map(a => {
+      const iv = ivs.find(i => i.application_id === a.id);
+      return `<div class="app-item">
+        <div class="app-item-info">
+          <h4>${a.job?.title||'—'}</h4>
+          <p>${a.job?.department||''} &nbsp;•&nbsp; ${a.job?.location||''} &nbsp;•&nbsp; Nộp ${new Date(a.applied_at).toLocaleDateString('vi-VN')}</p>
+          ${iv ? `<p style="margin-top:6px;font-size:12px;color:var(--green)">📅 Phỏng vấn: ${new Date(iv.scheduled_at).toLocaleString('vi-VN')} ${iv.meeting_link?`— <a href="${iv.meeting_link}" target="_blank" style="color:var(--green)">Vào Meet →</a>`:''}</p>` : ''}
+          ${iv?.feedback ? `<p style="margin-top:4px;font-size:12px;color:var(--muted)">Nhận xét: ${iv.feedback}</p>` : ''}
+        </div>
+        <span class="badge b-${a.status}">${{applied:'Đã nộp',screening:'Sàng lọc',interviewing:'Phỏng vấn',offered:'Nhận Offer',rejected:'Từ chối'}[a.status]||a.status}</span>
+      </div>`;
+    }).join('')}</div>`}`;
+}
+
+// =====================================================================
+// ATS BOARD
+// =====================================================================
+const ATS_COLS = [
+  {id:'applied', label:'Hồ sơ mới'},
+  {id:'screening', label:'Sàng lọc'},
+  {id:'interviewing', label:'Phỏng vấn'},
+  {id:'offered', label:'Nhận Offer'},
+  {id:'rejected', label:'Từ chối'}
+];
+
+function renderATS(c) {
+  const jobs = DB.get('jobs');
+  const jobId = c.dataset.atsJob || '';
+  c.innerHTML = `
+    <div class="sec-hd">
+      <div><div class="sec-title">Bảng ATS Kanban</div><div class="sec-sub">Quản lý toàn bộ phễu tuyển dụng theo thời gian thực</div></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <select class="fi" style="max-width:220px" onchange="filterATS(this.value)">
+          <option value="">Tất cả vị trí</option>
+          ${jobs.map(j=>`<option value="${j.id}"${j.id===jobId?' selected':''}>${j.title}</option>`).join('')}
+        </select>
+        <button class="btn btn-green btn-sm" onclick="openCreateJob()">+ Đăng tuyển</button>
+      </div>
+    </div>
+    <div class="ats-wrap"><div class="ats-board">${ATS_COLS.map(col => atsCol(col, jobId)).join('')}</div></div>`;
+}
+
+function filterATS(jobId) {
+  const c = document.getElementById('main-content');
+  c.dataset.atsJob = jobId;
+  renderATS(c);
+}
+
+function atsCol(col, filterJobId) {
+  const apps = DB.get('applications').filter(a => a.status === col.id && (!filterJobId || a.job_id === filterJobId));
+  const profiles = DB.get('profiles');
+  const jobs = DB.get('jobs');
+  const ivs = DB.get('interviews');
+  const enriched = apps.map(a => ({...a, candidate: profiles.find(p=>p.id===a.candidate_id), job: jobs.find(j=>j.id===a.job_id), interview: ivs.find(i=>i.application_id===a.id)}));
+  return `<div class="ats-col col-${col.id}">
+    <div class="ats-col-hd">${col.label}<span class="cnt">${apps.length}</span></div>
+    ${enriched.map(a => atsCandCard(a, col.id)).join('')}
+  </div>`;
+}
+
+function atsCandCard(a, status) {
+  const stars = a.interview?.score ? '★'.repeat(a.interview.score)+'☆'.repeat(5-a.interview.score) : '';
+  return `<div class="cand-card">
+    <div class="cc-name">${a.candidate?.full_name||'—'}</div>
+    <div class="cc-role">${a.job?.title||'—'}</div>
+    ${(a.candidate?.skills||[]).length ? `<div class="cc-skills">${a.candidate.skills.slice(0,3).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>` : ''}
+    <div class="cc-actions">
+      ${status==='applied' ? `<button class="btn btn-dark btn-xs" onclick="updateStatus('${a.id}','screening')">Sàng lọc →</button>` : ''}
+      ${status==='screening' ? `<div style="display:flex;gap:4px"><button class="btn btn-green btn-xs" style="flex:1" onclick="openScheduleIV('${a.id}')">📅 Lên lịch PV</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">✕</button></div>` : ''}
+      ${status==='interviewing' && !a.interview ? `<button class="btn btn-green btn-xs" style="width:100%" onclick="openScheduleIV('${a.id}')">📅 Lên lịch PV</button>` : ''}
+      ${status==='interviewing' && a.interview ? `<div style="font-size:10px;color:var(--orange);margin-bottom:5px">⏰ ${new Date(a.interview.scheduled_at).toLocaleDateString('vi-VN')}</div>${a.interview.score?`<div class="cc-stars">${'★'.repeat(a.interview.score)+'☆'.repeat(5-a.interview.score)} ${a.interview.score}/5</div>`:`<button class="btn btn-dark btn-xs" style="width:100%" onclick="openEval('${a.interview.id}','${a.id}')">★ Đánh giá</button>`}<div style="display:flex;gap:4px;margin-top:5px"><button class="btn btn-green btn-xs" style="flex:1" onclick="updateStatus('${a.id}','offered')">Offer</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">Loại</button></div>` : ''}
+      ${status==='offered' ? `<div style="color:var(--green);font-size:11px;font-weight:700">✓ Đã gửi Offer</div>${stars?`<div class="cc-stars">${stars}</div>`:''}` : ''}
+      ${status==='rejected' ? `<div style="color:var(--red);font-size:11px;font-weight:700">✕ Đã từ chối</div>` : ''}
+    </div>
+    <div class="cc-date">${a.resume_url?`<a href="${a.resume_url}" target="_blank" style="color:var(--green);font-size:10px">📎 Xem CV</a> &nbsp;•&nbsp; `:''}<span>${new Date(a.applied_at).toLocaleDateString('vi-VN')}</span></div>
+  </div>`;
+}
+
+function updateStatus(appId, status) {
+  const apps = DB.get('applications');
+  const idx = apps.findIndex(a=>a.id===appId);
+  if (idx<0) return;
+  apps[idx].status = status;
+  DB.set('applications', apps);
+  const labels = {screening:'Đã chuyển sang Sàng lọc',interviewing:'Đã chuyển sang Phỏng vấn',offered:'Đã gửi Offer!',rejected:'Đã từ chối ứng viên'};
+  toast(labels[status]||'Đã cập nhật');
+  renderATS(document.getElementById('main-content'));
+}
+
+function openScheduleIV(appId) {
+  const now = new Date(); now.setDate(now.getDate()+3); now.setHours(9,0,0,0);
+  const dtLocal = now.toISOString().slice(0,16);
+  openModal(`<div class="modal">
+    <div class="modal-hd"><div><div class="modal-title">Đặt lịch phỏng vấn</div></div><button class="close-btn" onclick="closeModal()">✕</button></div>
+    <div class="form-group"><label class="fl">Thời gian phỏng vấn</label><input id="iv-dt" type="datetime-local" class="fi" value="${dtLocal}"></div>
+    <div class="form-group"><label class="fl">Người phỏng vấn</label><input id="iv-iwr" type="text" class="fi" value="${currentUser.full_name}" placeholder="Tên người phỏng vấn"></div>
+    <div class="form-group"><label class="fl">Link họp (Google Meet / Zoom)</label><input id="iv-link" type="url" class="fi" placeholder="https://meet.google.com/abc-xyz"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-dark btn-sm" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-green btn-sm" onclick="submitScheduleIV('${appId}')">Lưu lịch hẹn</button>
+    </div>
+  </div>`);
+}
+
+function submitScheduleIV(appId) {
+  const dt = document.getElementById('iv-dt').value;
+  const iwr = document.getElementById('iv-iwr').value.trim();
+  const link = document.getElementById('iv-link').value.trim();
+  if (!dt||!iwr) { toast('Vui lòng điền đầy đủ thông tin!','err'); return; }
+  const ivs = DB.get('interviews');
+  ivs.push({id:'iv-'+Math.random().toString(36).substr(2,8), application_id:appId, scheduled_at:new Date(dt).toISOString(), interviewer_name:iwr, meeting_link:link, created_at:new Date().toISOString()});
+  DB.set('interviews', ivs);
+  updateStatus(appId, 'interviewing');
+  toast('Đã lên lịch phỏng vấn thành công!');
+  closeModal();
+}
+
+let evalScore = 0;
+
+function openEval(ivId, appId) {
+  evalScore = 0;
+  openModal(`<div class="modal">
+    <div class="modal-hd"><div><div class="modal-title">Đánh giá phỏng vấn</div></div><button class="close-btn" onclick="closeModal()">✕</button></div>
+    <div class="form-group">
+      <label class="fl">Điểm đánh giá</label>
+      <div class="star-row">${[1,2,3,4,5].map(n=>`<button class="star-btn" id="star-${n}" onclick="setEvalScore(${n})">${n} ★</button>`).join('')}</div>
+    </div>
+    <div class="form-group"><label class="fl">Nhận xét chi tiết</label><textarea id="ev-fb" class="fi" placeholder="Chuyên môn, thái độ, điểm mạnh, điểm cần cải thiện..."></textarea></div>
+    <div class="form-group">
+      <label class="fl">Cập nhật trạng thái hồ sơ</label>
+      <select id="ev-status" class="fi">
+        <option value="">Giữ nguyên (Đang phỏng vấn)</option>
+        <option value="offered">Chấp nhận — Gửi Offer</option>
+        <option value="rejected">Từ chối ứng viên</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-dark btn-sm" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-green btn-sm" onclick="submitEval('${ivId}','${appId}')">Lưu đánh giá</button>
+    </div>
+  </div>`);
+}
+
+function setEvalScore(n) {
+  evalScore = n;
+  for(let i=1;i<=5;i++) {
+    const el=document.getElementById('star-'+i);
+    if(el) el.className='star-btn'+(i<=n?' active':'');
+  }
+}
+
+function submitEval(ivId, appId) {
+  const fb = document.getElementById('ev-fb').value.trim();
+  const st = document.getElementById('ev-status').value;
+  if (!fb) { toast('Vui lòng nhập nhận xét!','err'); return; }
+  const ivs = DB.get('interviews');
+  const idx = ivs.findIndex(i=>i.id===ivId);
+  if (idx>=0) { ivs[idx].feedback=fb; ivs[idx].score=evalScore||null; }
+  DB.set('interviews', ivs);
+  if (st) updateStatus(appId, st);
+  toast('Đã lưu đánh giá!');
+  closeModal();
+  renderATS(document.getElementById('main-content'));
+}
+
+// =====================================================================
+// CREATE JOB
+// =====================================================================
+function openCreateJob() {
+  openModal(`<div class="modal" style="max-width:560px">
+    <div class="modal-hd"><div class="modal-title">Đăng tin tuyển dụng</div><button class="close-btn" onclick="closeModal()">✕</button></div>
+    <div class="g2">
+      <div class="form-group"><label class="fl">Chức danh công việc</label><input id="cj-title" type="text" class="fi" placeholder="Frontend Developer Intern" style="width:100%"></div>
+      <div class="form-group"><label class="fl">Phòng ban</label><select id="cj-dept" class="fi">
+        <option>Engineering</option><option>Product & Design</option><option>Marketing</option><option>Human Resources</option>
+      </select></div>
+    </div>
+    <div class="g2">
+      <div class="form-group"><label class="fl">Địa điểm</label><input id="cj-loc" type="text" class="fi" placeholder="Hà Nội (Hybrid)"></div>
+      <div class="form-group"><label class="fl">Loại hình</label><select id="cj-type" class="fi">
+        <option value="Internship">Thực tập</option><option value="Full-time">Toàn thời gian</option><option value="Part-time">Bán thời gian</option><option value="Remote">Remote</option>
+      </select></div>
+    </div>
+    <div class="form-group"><label class="fl">Mức lương hỗ trợ</label><input id="cj-sal" type="text" class="fi" placeholder="5,000,000 – 8,000,000 VND"></div>
+    <div class="form-group"><label class="fl">Mô tả công việc</label><textarea id="cj-desc" class="fi" placeholder="Mô tả nhiệm vụ và môi trường làm việc..."></textarea></div>
+    <div class="form-group"><label class="fl">Yêu cầu ứng viên</label><textarea id="cj-req" class="fi" placeholder="Kỹ năng, kinh nghiệm, thái độ cần có..."></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-dark btn-sm" onclick="closeModal()">Hủy</button>
+      <button class="btn btn-green btn-sm" onclick="submitCreateJob()">Đăng tin</button>
+    </div>
+  </div>`);
+}
+
+function submitCreateJob() {
+  const title = document.getElementById('cj-title').value.trim();
+  const loc = document.getElementById('cj-loc').value.trim();
+  const desc = document.getElementById('cj-desc').value.trim();
+  const req = document.getElementById('cj-req').value.trim();
+  if (!title||!loc||!desc||!req) { toast('Vui lòng điền đầy đủ thông tin!','err'); return; }
+  const jobs = DB.get('jobs');
+  jobs.unshift({
+    id:'job-'+Math.random().toString(36).substr(2,8),
+    title, department:document.getElementById('cj-dept').value,
+    location:loc, type:document.getElementById('cj-type').value,
+    salary_range:document.getElementById('cj-sal').value,
+    description:desc, requirements:req, status:'active',
+    created_at:new Date().toISOString()
+  });
+  DB.set('jobs', jobs);
+  toast('Đã đăng tin tuyển dụng thành công!');
+  closeModal();
+  switchTab(currentUser.role==='recruiter'?'ats':'jobs');
+}
+
+// =====================================================================
+// INTERVIEWS PAGE
+// =====================================================================
+function renderInterviews(c) {
+  const ivs = DB.get('interviews');
+  const apps = DB.get('applications');
+  const jobs = DB.get('jobs');
+  const profiles = DB.get('profiles');
+  let data = ivs.map(iv => {
+    const app = apps.find(a=>a.id===iv.application_id);
+    const job = jobs.find(j=>j.id===app?.job_id);
+    const cand = profiles.find(p=>p.id===app?.candidate_id);
+    return {...iv, app, job, cand};
+  });
+  if (currentUser.role === 'candidate') {
+    data = data.filter(iv => iv.app?.candidate_id === currentUser.id);
+  }
+  data.sort((a,b)=>new Date(a.scheduled_at)-new Date(b.scheduled_at));
+  c.innerHTML = `
+    <div class="sec-hd"><div>
+      <div class="sec-title">Lịch phỏng vấn</div>
+      <div class="sec-sub">${currentUser.role==='recruiter'?'Tất cả buổi phỏng vấn đã được lên lịch':'Các buổi phỏng vấn của bạn'}</div>
+    </div></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      ${data.length===0
+        ? `<div class="empty" style="padding:48px"><div class="empty-icon">📅</div><h3>Chưa có lịch phỏng vấn</h3><p>Lịch phỏng vấn sẽ xuất hiện sau khi HR lên lịch hẹn.</p></div>`
+        : `<table class="iv-table"><thead><tr>
+            <th>Ứng viên</th><th>Vị trí</th><th>Thời gian</th>
+            <th>Người PV</th><th>Link họp</th><th>Điểm / Nhận xét</th>
+            ${currentUser.role==='recruiter'?'<th></th>':''}
+          </tr></thead><tbody>
+          ${data.map(iv=>`<tr>
+            <td><strong>${iv.cand?.full_name||'—'}</strong><br><span style="color:var(--muted);font-size:11px">${iv.cand?.email||''}</span></td>
+            <td>${iv.job?.title||'—'}</td>
+            <td><strong>${new Date(iv.scheduled_at).toLocaleDateString('vi-VN')}</strong><br><span style="color:var(--muted);font-size:11px">${new Date(iv.scheduled_at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}</span></td>
+            <td>${iv.interviewer_name}</td>
+            <td>${iv.meeting_link?`<a href="${iv.meeting_link}" target="_blank" class="btn btn-green btn-xs">Vào Meet →</a>`:'—'}</td>
+            <td>
+              ${iv.score?`<div style="color:var(--orange)">${'★'.repeat(iv.score)+'☆'.repeat(5-iv.score)} ${iv.score}/5</div>`:''}
+              ${iv.feedback?`<div style="font-size:11px;color:var(--muted);margin-top:3px">${iv.feedback}</div>`:(iv.score?'':`<span style="color:var(--muted);font-size:11px">Chưa đánh giá</span>`)}
+            </td>
+            ${currentUser.role==='recruiter'?`<td>${!iv.score?`<button class="btn btn-dark btn-xs" onclick="openEval('${iv.id}','${iv.app?.id}')">★ Đánh giá</button>`:'—'}</td>`:''}`
+          ).join('</tr>')}
+          </tbody></table>`}
+    </div>`;
+}
+
+// =====================================================================
+// PROFILE PAGE
+// =====================================================================
+function renderProfile(c) {
+  const u = DB.get('profiles').find(p=>p.id===currentUser.id) || currentUser;
+  const skills = u.skills || [];
+  c.innerHTML = `
+    <div class="sec-hd"><div><div class="sec-title">Hồ sơ cá nhân</div><div class="sec-sub">Cập nhật thông tin và kỹ năng để nhà tuyển dụng dễ tìm thấy bạn</div></div></div>
+    <div class="profile-wrap">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),#169c46);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#000;flex-shrink:0">${(u.full_name||u.email||'?')[0].toUpperCase()}</div>
+          <div>
+            <div style="font-size:18px;font-weight:700">${u.full_name||'—'}</div>
+            <div style="font-size:12px;color:var(--muted)">${u.email}</div>
+            <span class="badge b-${u.role}" style="margin-top:6px">${u.role==='recruiter'?'🏢 Nhà tuyển dụng':'👤 Ứng viên thực tập'}</span>
+          </div>
+        </div>
+        <form onsubmit="saveProfile(event)">
+          <div class="form-group">
+            <label class="fl">Họ và Tên</label>
+            <input id="pf-name" type="text" class="fi" value="${u.full_name||''}" required>
+          </div>
+          <div class="form-group">
+            <label class="fl">Email (không thể thay đổi)</label>
+            <input type="email" class="fi" value="${u.email}" disabled style="opacity:.5">
+          </div>
+          ${u.role==='candidate'?`
+          <div class="form-group">
+            <label class="fl">Link CV cá nhân (Google Drive / PDF)</label>
+            <input id="pf-cv" type="url" class="fi" value="${u.resume_url||''}" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="form-group">
+            <label class="fl">Giới thiệu bản thân (Bio)</label>
+            <textarea id="pf-bio" class="fi">${u.bio||''}</textarea>
+          </div>
+          <div class="form-group">
+            <label class="fl">Kỹ năng nổi bật</label>
+            <div style="display:flex;gap:8px;margin-bottom:10px">
+              <input id="pf-skill-input" type="text" class="fi" placeholder="React, SQL, Python... rồi nhấn Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addSkill()}">
+              <button type="button" class="btn btn-dark btn-sm" onclick="addSkill()">Thêm</button>
+            </div>
+            <div class="skills-list" id="skills-display">
+              ${skills.map(s=>`<span class="skill-chip">${s}<button type="button" onclick="removeSkill('${s}')">×</button></span>`).join('')}
+              ${!skills.length?`<span style="font-size:12px;color:var(--muted)">Chưa có kỹ năng nào</span>`:''}
+            </div>
+          </div>`:''}
+          <div style="display:flex;justify-content:flex-end;margin-top:20px">
+            <button type="submit" class="btn btn-green">Lưu thay đổi</button>
+          </div>
+        </form>
+      </div>
+    </div>`;
+}
+
+let profileSkills = [];
+
+function addSkill() {
+  const input = document.getElementById('pf-skill-input');
+  if (!input) return;
+  const val = input.value.trim();
+  const u = DB.get('profiles').find(p=>p.id===currentUser.id) || currentUser;
+  if (!val) return;
+  if (!u.skills) u.skills = [];
+  if (u.skills.includes(val)) { toast('Kỹ năng này đã có rồi!','err'); return; }
+  u.skills.push(val);
+  const profiles = DB.get('profiles');
+  const idx = profiles.findIndex(p=>p.id===u.id);
+  if (idx>=0) profiles[idx]=u; else profiles.push(u);
+  DB.set('profiles', profiles);
+  input.value='';
+  renderSkills(u.skills);
+}
+
+function removeSkill(sk) {
+  const u = DB.get('profiles').find(p=>p.id===currentUser.id) || currentUser;
+  u.skills = (u.skills||[]).filter(s=>s!==sk);
+  const profiles = DB.get('profiles');
+  const idx = profiles.findIndex(p=>p.id===u.id);
+  if (idx>=0) profiles[idx]=u;
+  DB.set('profiles', profiles);
+  renderSkills(u.skills);
+}
+
+function renderSkills(skills) {
+  const el = document.getElementById('skills-display');
+  if (!el) return;
+  el.innerHTML = skills.length
+    ? skills.map(s=>`<span class="skill-chip">${s}<button type="button" onclick="removeSkill('${s}')">×</button></span>`).join('')
+    : `<span style="font-size:12px;color:var(--muted)">Chưa có kỹ năng nào</span>`;
+}
+
+function saveProfile(e) {
+  e.preventDefault();
+  const profiles = DB.get('profiles');
+  const idx = profiles.findIndex(p=>p.id===currentUser.id);
+  const u = idx>=0?profiles[idx]:{...currentUser};
+  u.full_name = document.getElementById('pf-name').value.trim();
+  const cvEl = document.getElementById('pf-cv');
+  const bioEl = document.getElementById('pf-bio');
+  if (cvEl) u.resume_url = cvEl.value.trim();
+  if (bioEl) u.bio = bioEl.value.trim();
+  if (idx>=0) profiles[idx]=u; else profiles.push(u);
+  DB.set('profiles', profiles);
+  DB.setSession(u);
+  currentUser = u;
+  document.getElementById('nav-user-info').innerHTML = `<strong>${u.full_name||u.email}</strong><em>${u.role==='recruiter'?'Nhà tuyển dụng':'Ứng viên thực tập'}</em>`;
+  toast('Đã lưu thông tin cá nhân!');
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+seedData();
+renderAuth();
+
+const savedUser = DB.session();
+if (savedUser) {
+  startApp(savedUser);
+} else {
+  // If came from landing page with a hash, show register
+  if (window.location.hash === '#register') { authMode = 'register'; renderAuth(); }
+}
+</script>
+</body>
+</html>
