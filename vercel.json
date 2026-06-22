@@ -1,4 +1,10 @@
 {
     "outputDirectory":  ".",
-    "buildCommand":  "echo \"done\""
+    "buildCommand":  "echo \"done\"",
+    "rewrites": [
+        {
+            "source": "/api/:match*",
+            "destination": "https://hireflow-9fn2.onrender.com/api/:match*"
+        }
+    ]
 }

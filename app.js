@@ -10,7 +10,10 @@ const DB = {
   clearSession: () => localStorage.removeItem('hf_session'),
 };
 
-const API_URL = 'https://hireflow-9fn2.onrender.com/api';
+// Sử dụng Vercel Proxy (/api) khi deploy để tránh lỗi CORS và bảo mật URL server.
+// Nếu đang chạy local (Live Server), tự động dùng thẳng link Render.
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API_URL = isLocal ? 'https://hireflow-9fn2.onrender.com/api' : '/api';
 
 const API = {
   get: async (path) => {
