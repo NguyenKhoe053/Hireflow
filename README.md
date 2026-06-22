@@ -1,47 +1,38 @@
-# Tuyển Thực Tập (Hireflow) - Nền tảng Quản lý Tuyển dụng (ATS)
+# Tuyển Thực Tập (Hireflow) - Nền tảng ATS thông minh 💼
 
-Hireflow (Tuyển Thực Tập) là một nền tảng Hệ thống Theo dõi Ứng viên (Applicant Tracking System - ATS) được phát triển nhằm tối ưu hóa quy trình tuyển dụng. Dự án cung cấp giải pháp toàn diện cho cả Nhà tuyển dụng (HR) và Ứng viên, tích hợp trí tuệ nhân tạo (AI) để sàng lọc và đánh giá hồ sơ
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://hireflow-omega-khaki.vercel.app/)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-success)
+![Supabase](https://img.shields.io/badge/Supabase-Database-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow)
 
-## 🚀 Tính năng nổi bật
+Hệ thống Theo dõi Ứng viên (Applicant Tracking System - ATS) toàn diện được xây dựng bởi sinh viên, dành cho sinh viên. Dự án được triển khai thực tế trên nền tảng Cloud 24/7 với khả năng chống spam tự động bằng công nghệ bảo mật của Cloudflare.
 
-### 🏢 Dành cho Nhà tuyển dụng (HR)
-- **Bảng ATS Kanban**: Quản lý trạng thái ứng viên trực quan bằng thao tác kéo thả (Hồ sơ mới, Đang phỏng vấn, Đã nhận việc,...)
-- **AI Sàng lọc CV**: Tự động chấm điểm độ phù hợp của CV với Yêu cầu công việc (JD) dựa trên thuật toán phân tích AI
-- **Quản lý Tuyển dụng**: Khởi tạo, chỉnh sửa và đăng tải các vị trí công việc
-- **Lịch Phỏng vấn**: Đặt lịch và theo dõi tiến trình phỏng vấn của từng ứng viên
+## 🚀 Tính Năng Nổi Bật (Key Features)
+- **Kiểm soát truy cập (Role-based Access Control):** Phân quyền chi tiết, tách biệt giao diện cho `Nhà tuyển dụng (HR)` và `Ứng viên (Candidate)`.
+- **Bảng ATS Kanban:** Quản lý tiến trình ứng viên bằng thao tác kéo thả trực quan (Hồ sơ mới, Đang phỏng vấn, Đã nhận việc,...).
+- **Tìm kiếm thông minh:** Tính năng lọc ứng viên và công việc theo thời gian thực siêu tốc độ.
+- **Bảo mật & Chống Spam:** Tích hợp `Cloudflare Turnstile` chống bot tự động và cấu hình Vercel Proxy để bảo mật tuyệt đối API nội bộ.
+- **AI Sàng lọc CV:** Tự động chấm điểm độ phù hợp của CV với Yêu cầu công việc (JD) dựa trên thuật toán phân tích thông minh.
 
-### 👤 Dành cho Ứng viên
-- **Hồ sơ cá nhân**: Quản lý hồ sơ năng lực chuyên nghiệp và đính kèm CV
-- **Ứng tuyển 1-chạm**: Xem danh sách việc làm và ứng tuyển nhanh chóng
-- **Theo dõi tiến độ**: Xem trạng thái hồ sơ của mình trong quy trình xét duyệt của công ty theo thời gian thực
+## 🛠 Công Nghệ Sử Dụng (Tech Stack)
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript, Cloudflare Turnstile
+- **Backend:** Node.js, Express.js
+- **Database:** PostgreSQL (Cloud Hosted via Supabase)
+- **Deployment:** Vercel (Frontend) & Render.com (Backend Serverless)
 
-## 🛠 Công nghệ sử dụng
+## 💡 Tài Khoản Trải Nghiệm (Demo Accounts)
+Truy cập hệ thống và sử dụng tính năng **Đăng nhập nhanh thử nghiệm** ngay trên trang chủ để trải nghiệm các quyền hạn khác nhau mà không cần tạo tài khoản:
+- **Tài khoản HR Manager** (Đăng tuyển & Quản lý bảng Kanban): `hr@tuyenthuctap.vn`
+- **Tài khoản Ứng viên** (Tìm việc, rải CV & Quản lý profile): `ungvien@tuyenthuctap.vn`
+- Hoặc bạn có thể tự Đăng ký một tài khoản hoàn toàn mới để trực tiếp trải nghiệm màn hình bảo mật Cloudflare.
 
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript. Giao diện được thiết kế theo nguyên tắc UI/UX hiện đại (Dark mode, Pill buttons, Smooth animations)
-- **Backend API**: Node.js, Express.js
-- **Database**: PostgreSQL (Supabase) với cấu trúc SQL chuẩn hóa (Relational Data)
-- **Deployment**: Vercel (Frontend Cloud) & Render (Backend Cloud)
-
-## 🌐 Trải nghiệm trực tiếp (Live Demo)
-
-- **Website**: [https://hireflow-omega-khaki.vercel.app/](https://hireflow-omega-khaki.vercel.app/)
-
-> 💡 **Mẹo**: Sử dụng tính năng **Đăng nhập nhanh thử nghiệm** trên trang chủ để trải nghiệm ngay hệ thống dưới góc nhìn của HR hoặc Ứng viên mà không cần tạo tài khoản
-
-## ⚙️ Hướng dẫn cài đặt (Local Development)
-
-Dự án bao gồm mã nguồn Frontend tĩnh ở thư mục gốc và thư mục `backend/` chứa RESTful API
-
-**1. Khởi chạy Máy chủ API (Backend)**
-```bash
-cd backend
-npm install
-npm start
-```
-*API sẽ chạy tại cổng `http://localhost:3000` (cần cung cấp file `.env` chứa chuỗi kết nối Supabase).*
-
-**2. Khởi chạy Giao diện (Frontend)**
-Sử dụng extension **Live Server** trên VS Code hoặc bất kỳ Web Server tĩnh nào để mở file `index.html`.
+## 💻 Cài Đặt Tại Local (Local Setup)
+Muốn chạy dự án này trên máy tính cá nhân:
+1. Clone repository này về máy.
+2. Mở thư mục `backend`, chạy lệnh `npm install` để cài đặt thư viện.
+3. Điền thông tin Database Supabase vào file `.env` theo mẫu.
+4. Chạy lệnh `npm start` để khởi động Server Backend tại `http://localhost:3000`.
+5. Mở file `index.html` bằng extension **Live Server** (trên VS Code) để khởi động Frontend. Trình duyệt sẽ tự động điều hướng kết nối API về Backend cục bộ nhờ hệ thống Proxy thông minh.
 
 ---
-*Dự án được xây dựng với mục tiêu mang lại sự minh bạch, hiện đại và hiệu quả cho thị trường tuyển dụng.*
+*Dự án được phát triển với mục tiêu mang lại sự minh bạch, chuyên nghiệp và tối ưu hóa quy trình kết nối giữa sinh viên và nhà tuyển dụng.*
