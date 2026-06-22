@@ -292,22 +292,6 @@
   
       h1, h2, h3, h4, h5, h6 { letter-spacing: -0.04em; }
     </style>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-  [data-lucide] {
-    width: 1.2em;
-    height: 1.2em;
-    vertical-align: -0.2em;
-    stroke-width: 2.2;
-  }
-  .logo-box [data-lucide], .logo-icon [data-lucide] {
-    width: 24px; height: 24px; color: #fff;
-  }
-  .tech-icon [data-lucide] {
-    width: 28px; height: 28px; color: #1ed760;
-  }
-  .ql-btn [data-lucide] { margin-right: 8px; color: #1ed760; }
-</style>
 </head>
 <body>
 
@@ -318,7 +302,7 @@
 <div id="auth-page">
   <div class="auth-box">
     <div class="auth-logo">
-      <div class="logo-box"><i data-lucide="briefcase"></i></div>
+      <div class="logo-box">💼</div>
       <div>
         <div class="logo-name">Tuyển<span> Thực Tập</span></div>
         <span class="logo-role">Intern Platform</span>
@@ -337,7 +321,7 @@
   <nav class="navbar">
     <div class="nav-inner">
       <div class="nav-logo" onclick="goHome()">
-        <div class="logo-box"><i data-lucide="briefcase"></i></div>
+        <div class="logo-box">💼</div>
         <div>
           <div class="logo-name">Tuyển<span> Thực Tập</span></div>
           <span class="logo-role" id="nav-role-label">—</span>
@@ -358,19 +342,5 @@
 <div id="modal-root" style="display:none"></div>
 
 <script src="app.js"></script>
-<script>
-  lucide.createIcons();
-  const observer = new MutationObserver((mutations) => {
-    let shouldUpdate = false;
-    for(let m of mutations) {
-      if(m.addedNodes.length > 0) {
-        shouldUpdate = true;
-        break;
-      }
-    }
-    if(shouldUpdate) lucide.createIcons();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-</script>
 </body>
 </html>

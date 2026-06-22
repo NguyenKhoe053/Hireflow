@@ -85,10 +85,10 @@ function renderAuth() {
       <div class="quick-logins">
         <div class="ql-label">Đăng nhập nhanh thử nghiệm</div>
         <button class="ql-btn" onclick="quickLogin('ungvien@tuyenthuctap.vn')">
-          <span><i data-lucide="user"></i> Tài khoản Ứng viên</span><em>Nguyễn Văn An</em>
+          <span>👤 Tài khoản Ứng viên</span><em>Nguyễn Văn An</em>
         </button>
         <button class="ql-btn" onclick="quickLogin('hr@tuyenthuctap.vn')">
-          <span><i data-lucide="building"></i> Tài khoản HR Manager</span><em>Trần Thị Hương</em>
+          <span>🏢 Tài khoản HR Manager</span><em>Trần Thị Hương</em>
         </button>
       </div>`;
   } else {
@@ -103,8 +103,8 @@ function renderAuth() {
         <div class="form-group">
           <label class="fl">Tôi là</label>
           <div class="role-pick">
-            <div class="role-opt selected-candidate" id="ropt-c" onclick="pickRole('candidate')"><i data-lucide="user"></i> Ứng viên</div>
-            <div class="role-opt" id="ropt-r" onclick="pickRole('recruiter')"><i data-lucide="building"></i> Nhà tuyển dụng</div>
+            <div class="role-opt selected-candidate" id="ropt-c" onclick="pickRole('candidate')">👤 Ứng viên</div>
+            <div class="role-opt" id="ropt-r" onclick="pickRole('recruiter')">🏢 Nhà tuyển dụng</div>
           </div>
           <input type="hidden" id="r-role" value="candidate">
         </div>
@@ -201,8 +201,8 @@ function goHome() {
 
 function renderNav() {
   const tabs = currentUser.role === 'recruiter'
-    ? [{id:'ats',label:'🗂 Bảng ATS'},{id:'jobs',label:'<i data-lucide="briefcase"></i> Đăng tuyển'},{id:'interviews',label:'<i data-lucide="calendar"></i> Phỏng vấn'},{id:'profile',label:'<i data-lucide="user"></i> Tài khoản'}]
-    : [{id:'jobs',label:'<i data-lucide="briefcase"></i> Việc làm'},{id:'dashboard',label:'📄 Đơn ứng tuyển'},{id:'interviews',label:'<i data-lucide="calendar"></i> Lịch hẹn'},{id:'profile',label:'<i data-lucide="user"></i> Tài khoản'}];
+    ? [{id:'ats',label:'🗂 Bảng ATS'},{id:'jobs',label:'💼 Đăng tuyển'},{id:'interviews',label:'📅 Phỏng vấn'},{id:'profile',label:'👤 Tài khoản'}]
+    : [{id:'jobs',label:'💼 Việc làm'},{id:'dashboard',label:'📄 Đơn ứng tuyển'},{id:'interviews',label:'📅 Lịch hẹn'},{id:'profile',label:'👤 Tài khoản'}];
   document.getElementById('nav-tabs').innerHTML = tabs.map(t =>
     `<button class="nav-tab${currentTab===t.id?' active':''}" onclick="switchTab('${t.id}')">${t.label}</button>`
   ).join('');
@@ -254,8 +254,8 @@ function jobCard(job) {
     <div class="job-dept">${job.department}</div>
     <div class="job-title">${job.title}</div>
     <div class="job-meta">
-      <div class="job-meta-row"><i data-lucide="map-pin"></i> ${job.location}</div>
-      <div class="job-meta-row"><i data-lucide="circle-dollar-sign"></i> ${job.salary_range||'Thỏa thuận'}</div>
+      <div class="job-meta-row">📍 ${job.location}</div>
+      <div class="job-meta-row">💰 ${job.salary_range||'Thỏa thuận'}</div>
     </div>
     <span class="job-type-badge">${job.type}</span>
     <p class="job-desc" style="margin-top:10px">${job.description}</p>
@@ -289,7 +289,7 @@ function openJobDetail(jobId) {
       <div>
         <div style="font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--green);margin-bottom:4px">${job.department}</div>
         <div class="modal-title">${job.title}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:4px"><i data-lucide="map-pin"></i> ${job.location} &nbsp;•&nbsp; <i data-lucide="circle-dollar-sign"></i> ${job.salary_range||'Thỏa thuận'} &nbsp;•&nbsp; ${job.type}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">📍 ${job.location} &nbsp;•&nbsp; 💰 ${job.salary_range||'Thỏa thuận'} &nbsp;•&nbsp; ${job.type}</div>
       </div>
       <button class="close-btn" onclick="closeModal()">✕</button>
     </div>
@@ -379,7 +379,7 @@ function renderDashboard(c) {
         <div class="app-item-info">
           <h4>${a.job?.title||'—'}</h4>
           <p>${a.job?.department||''} &nbsp;•&nbsp; ${a.job?.location||''} &nbsp;•&nbsp; Nộp ${new Date(a.applied_at).toLocaleDateString('vi-VN')}</p>
-          ${iv ? `<p style="margin-top:6px;font-size:12px;color:var(--green)"><i data-lucide="calendar"></i> Phỏng vấn: ${new Date(iv.scheduled_at).toLocaleString('vi-VN')} ${iv.meeting_link?`— <a href="${iv.meeting_link}" target="_blank" style="color:var(--green)">Vào Meet →</a>`:''}</p>` : ''}
+          ${iv ? `<p style="margin-top:6px;font-size:12px;color:var(--green)">📅 Phỏng vấn: ${new Date(iv.scheduled_at).toLocaleString('vi-VN')} ${iv.meeting_link?`— <a href="${iv.meeting_link}" target="_blank" style="color:var(--green)">Vào Meet →</a>`:''}</p>` : ''}
           ${iv?.feedback ? `<p style="margin-top:4px;font-size:12px;color:var(--muted)">Nhận xét: ${iv.feedback}</p>` : ''}
         </div>
         <span class="badge b-${a.status}">${{applied:'Đã nộp',screening:'Sàng lọc',interviewing:'Phỏng vấn',offered:'Nhận Offer',rejected:'Từ chối'}[a.status]||a.status}</span>
@@ -434,20 +434,20 @@ function atsCol(col, filterJobId) {
 }
 
 function atsCandCard(a, status) {
-  const stars = a.interview?.score ? '<i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(a.interview.score)+'<i data-lucide="star" style="color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(5-a.interview.score) : '';
+  const stars = a.interview?.score ? '★'.repeat(a.interview.score)+'☆'.repeat(5-a.interview.score) : '';
   return `<div class="cand-card">
     <div class="cc-name">${a.candidate?.full_name||'—'}</div>
     <div class="cc-role">${a.job?.title||'—'}</div>
     ${(a.candidate?.skills||[]).length ? `<div class="cc-skills">${a.candidate.skills.slice(0,3).map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>` : ''}
     <div class="cc-actions">
       ${status==='applied' ? `<button class="btn btn-dark btn-xs" onclick="updateStatus('${a.id}','screening')">Sàng lọc →</button>` : ''}
-      ${status==='screening' ? `<div style="display:flex;gap:4px"><button class="btn btn-green btn-xs" style="flex:1" onclick="openScheduleIV('${a.id}')"><i data-lucide="calendar"></i> Lên lịch PV</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">✕</button></div>` : ''}
-      ${status==='interviewing' && !a.interview ? `<button class="btn btn-green btn-xs" style="width:100%" onclick="openScheduleIV('${a.id}')"><i data-lucide="calendar"></i> Lên lịch PV</button>` : ''}
-      ${status==='interviewing' && a.interview ? `<div style="font-size:10px;color:var(--orange);margin-bottom:5px"><i data-lucide="clock"></i> ${new Date(a.interview.scheduled_at).toLocaleDateString('vi-VN')}</div>${a.interview.score?`<div class="cc-stars">${'<i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(a.interview.score)+'<i data-lucide="star" style="color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(5-a.interview.score)} ${a.interview.score}/5</div>`:`<button class="btn btn-dark btn-xs" style="width:100%" onclick="openEval('${a.interview.id}','${a.id}')"><i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i> Đánh giá</button>`}<div style="display:flex;gap:4px;margin-top:5px"><button class="btn btn-green btn-xs" style="flex:1" onclick="updateStatus('${a.id}','offered')">Offer</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">Loại</button></div>` : ''}
+      ${status==='screening' ? `<div style="display:flex;gap:4px"><button class="btn btn-green btn-xs" style="flex:1" onclick="openScheduleIV('${a.id}')">📅 Lên lịch PV</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">✕</button></div>` : ''}
+      ${status==='interviewing' && !a.interview ? `<button class="btn btn-green btn-xs" style="width:100%" onclick="openScheduleIV('${a.id}')">📅 Lên lịch PV</button>` : ''}
+      ${status==='interviewing' && a.interview ? `<div style="font-size:10px;color:var(--orange);margin-bottom:5px">⏰ ${new Date(a.interview.scheduled_at).toLocaleDateString('vi-VN')}</div>${a.interview.score?`<div class="cc-stars">${'★'.repeat(a.interview.score)+'☆'.repeat(5-a.interview.score)} ${a.interview.score}/5</div>`:`<button class="btn btn-dark btn-xs" style="width:100%" onclick="openEval('${a.interview.id}','${a.id}')">★ Đánh giá</button>`}<div style="display:flex;gap:4px;margin-top:5px"><button class="btn btn-green btn-xs" style="flex:1" onclick="updateStatus('${a.id}','offered')">Offer</button><button class="btn btn-red btn-xs" onclick="updateStatus('${a.id}','rejected')">Loại</button></div>` : ''}
       ${status==='offered' ? `<div style="color:var(--green);font-size:11px;font-weight:700">✓ Đã gửi Offer</div>${stars?`<div class="cc-stars">${stars}</div>`:''}` : ''}
       ${status==='rejected' ? `<div style="color:var(--red);font-size:11px;font-weight:700">✕ Đã từ chối</div>` : ''}
     </div>
-    <div class="cc-date">${a.resume_url?`<a href="${a.resume_url}" target="_blank" style="color:var(--green);font-size:10px"><i data-lucide="paperclip"></i> Xem CV</a> &nbsp;•&nbsp; `:''}<span>${new Date(a.applied_at).toLocaleDateString('vi-VN')}</span></div>
+    <div class="cc-date">${a.resume_url?`<a href="${a.resume_url}" target="_blank" style="color:var(--green);font-size:10px">📎 Xem CV</a> &nbsp;•&nbsp; `:''}<span>${new Date(a.applied_at).toLocaleDateString('vi-VN')}</span></div>
   </div>`;
 }
 
@@ -498,7 +498,7 @@ function openEval(ivId, appId) {
     <div class="modal-hd"><div><div class="modal-title">Đánh giá phỏng vấn</div></div><button class="close-btn" onclick="closeModal()">✕</button></div>
     <div class="form-group">
       <label class="fl">Điểm đánh giá</label>
-      <div class="star-row">${[1,2,3,4,5].map(n=>`<button class="star-btn" id="star-${n}" onclick="setEvalScore(${n})">${n} <i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i></button>`).join('')}</div>
+      <div class="star-row">${[1,2,3,4,5].map(n=>`<button class="star-btn" id="star-${n}" onclick="setEvalScore(${n})">${n} ★</button>`).join('')}</div>
     </div>
     <div class="form-group"><label class="fl">Nhận xét chi tiết</label><textarea id="ev-fb" class="fi" placeholder="Chuyên môn, thái độ, điểm mạnh, điểm cần cải thiện..."></textarea></div>
     <div class="form-group">
@@ -612,7 +612,7 @@ function renderInterviews(c) {
     </div></div>
     <div class="card" style="padding:0;overflow:hidden">
       ${data.length===0
-        ? `<div class="empty" style="padding:48px"><div class="empty-icon"><i data-lucide="calendar"></i></div><h3>Chưa có lịch phỏng vấn</h3><p>Lịch phỏng vấn sẽ xuất hiện sau khi HR lên lịch hẹn.</p></div>`
+        ? `<div class="empty" style="padding:48px"><div class="empty-icon">📅</div><h3>Chưa có lịch phỏng vấn</h3><p>Lịch phỏng vấn sẽ xuất hiện sau khi HR lên lịch hẹn.</p></div>`
         : `<table class="iv-table"><thead><tr>
             <th>Ứng viên</th><th>Vị trí</th><th>Thời gian</th>
             <th>Người PV</th><th>Link họp</th><th>Điểm / Nhận xét</th>
@@ -625,10 +625,10 @@ function renderInterviews(c) {
             <td>${iv.interviewer_name}</td>
             <td>${iv.meeting_link?`<a href="${iv.meeting_link}" target="_blank" class="btn btn-green btn-xs">Vào Meet →</a>`:'—'}</td>
             <td>
-              ${iv.score?`<div style="color:var(--orange)">${'<i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(iv.score)+'<i data-lucide="star" style="color:gold;width:14px;height:14px;vertical-align:middle;"></i>'.repeat(5-iv.score)} ${iv.score}/5</div>`:''}
+              ${iv.score?`<div style="color:var(--orange)">${'★'.repeat(iv.score)+'☆'.repeat(5-iv.score)} ${iv.score}/5</div>`:''}
               ${iv.feedback?`<div style="font-size:11px;color:var(--muted);margin-top:3px">${iv.feedback}</div>`:(iv.score?'':`<span style="color:var(--muted);font-size:11px">Chưa đánh giá</span>`)}
             </td>
-            ${currentUser.role==='recruiter'?`<td>${!iv.score?`<button class="btn btn-dark btn-xs" onclick="openEval('${iv.id}','${iv.app?.id}')"><i data-lucide="star" style="fill:currentColor;color:gold;width:14px;height:14px;vertical-align:middle;"></i> Đánh giá</button>`:'—'}</td>`:''}`
+            ${currentUser.role==='recruiter'?`<td>${!iv.score?`<button class="btn btn-dark btn-xs" onclick="openEval('${iv.id}','${iv.app?.id}')">★ Đánh giá</button>`:'—'}</td>`:''}`
           ).join('</tr>')}
           </tbody></table>`}
     </div>`;
@@ -649,7 +649,7 @@ function renderProfile(c) {
           <div>
             <div style="font-size:18px;font-weight:700">${u.full_name||'—'}</div>
             <div style="font-size:12px;color:var(--muted)">${u.email}</div>
-            <span class="badge b-${u.role}" style="margin-top:6px">${u.role==='recruiter'?'<i data-lucide="building"></i> Nhà tuyển dụng':'<i data-lucide="user"></i> Ứng viên thực tập'}</span>
+            <span class="badge b-${u.role}" style="margin-top:6px">${u.role==='recruiter'?'🏢 Nhà tuyển dụng':'👤 Ứng viên thực tập'}</span>
           </div>
         </div>
         <form onsubmit="saveProfile(event)">
@@ -783,7 +783,7 @@ if (savedUser) {
 
 async function screenCVAI(appId) {
   const resDiv = document.getElementById('ai-result');
-  resDiv.innerHTML = '<div style="margin-top:15px;color:#1ed760;font-weight:bold;"><i data-lucide="bot"></i> AI đang phân tích CV... vui lòng chờ...</div>';
+  resDiv.innerHTML = '<div style="margin-top:15px;color:#1ed760;font-weight:bold;">🤖 AI đang phân tích CV... vui lòng chờ...</div>';
   
   try {
     const aiResult = await API.post('/ai/screen-cv', { application_id: appId });
@@ -795,7 +795,7 @@ async function screenCVAI(appId) {
     resDiv.innerHTML = `
       <div style="margin-top:15px; padding:15px; border:1px solid #ddd; border-radius:8px; background:#f9f9f9;">
         <div style="font-weight:bold; font-size:18px; display:flex; align-items:center; gap:8px;">
-          <i data-lucide="bot"></i> AI Score: <span style="color:${color}">${aiResult.score}%</span>
+          🤖 AI Score: <span style="color:${color}">${aiResult.score}%</span>
         </div>
         <p style="margin-top:8px; font-size:14px; color:#444;">${aiResult.feedback}</p>
       </div>
