@@ -745,20 +745,25 @@ function saveProfile(e) {
 }
 
 function seedData() {
-  if (!localStorage.getItem('hf_seeded')) {
+  if (!localStorage.getItem('hf_seeded_v2')) {
     DB.set('profiles', [
       {id:'usr-1',email:'ungvien@tuyenthuctap.vn',full_name:'Nguyễn Văn An',role:'candidate',skills:['React','CSS','JavaScript'],bio:'Sinh viên CNTT năm 4, đam mê Frontend.',resume_url:'https://drive.google.com/'},
       {id:'usr-2',email:'hr@tuyenthuctap.vn',full_name:'Trần Thị Hương',role:'recruiter',skills:[],bio:'',resume_url:''},
     ]);
     DB.set('jobs', [
-      {id:'j-1',title:'Frontend Developer Intern',department:'Engineering',location:'Hanoi, Vietnam',type:'Internship',salary_range:'5,000,000 - 8,000,000 VND',status:'active'},
-      {id:'j-2',title:'UI/UX Designer Intern',department:'Product & Design',location:'Remote',type:'Internship',salary_range:'4,000,000 - 6,000,000 VND',status:'active'}
+      {id:'j-1',title:'Frontend Developer Intern',department:'Engineering',location:'Hanoi, Vietnam (Hybrid)',type:'Internship',salary_range:'5,000,000 - 8,000,000 VND',status:'active'},
+      {id:'j-2',title:'Backend Engineer Intern (Node.js)',department:'Engineering',location:'Ho Chi Minh City, Vietnam',type:'Internship',salary_range:'6,000,000 - 9,000,000 VND',status:'active'},
+      {id:'j-3',title:'UI/UX Designer Intern',department:'Product & Design',location:'Remote',type:'Internship',salary_range:'4,000,000 - 6,000,000 VND',status:'active'},
+      {id:'j-4',title:'Data Analyst Intern',department:'Data',location:'Hanoi, Vietnam',type:'Internship',salary_range:'5,000,000 - 7,000,000 VND',status:'active'},
+      {id:'j-5',title:'QA/QC Tester Intern',department:'Engineering',location:'Da Nang, Vietnam',type:'Internship',salary_range:'4,000,000 - 6,000,000 VND',status:'active'},
+      {id:'j-6',title:'Product Management Intern',department:'Product',location:'Hanoi, Vietnam (Hybrid)',type:'Internship',salary_range:'5,000,000 - 8,000,000 VND',status:'active'},
+      {id:'j-7',title:'Digital Marketing Intern',department:'Marketing',location:'Remote',type:'Internship',salary_range:'3,000,000 - 5,000,000 VND',status:'active'}
     ]);
     DB.set('applications', [
       {id:'a-1',job_id:'j-1',candidate_id:'usr-1',status:'col-new',applied_at:new Date().toISOString(),resume_url:'https://drive.google.com/'}
     ]);
     DB.set('interviews', []);
-    localStorage.setItem('hf_seeded', '1');
+    localStorage.setItem('hf_seeded_v2', '1');
   }
 }
 
